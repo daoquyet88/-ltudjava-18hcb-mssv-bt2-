@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 20, 2019 9:52:04 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entities.Bangdiem" table="bangdiem" catalog="giaovu" optimistic-lock="version">
+        <composite-id name="id" class="entities.BangdiemId">
+            <key-property name="maLop" type="string">
+                <column name="MaLop" length="10" />
+            </key-property>
+            <key-property name="maMon" type="string">
+                <column name="MaMon" length="10" />
+            </key-property>
+            <key-property name="maSv" type="string">
+                <column name="MaSV" length="10" />
+            </key-property>
+        </composite-id>
+        <property name="stt" type="int">
+            <column name="STT" not-null="true" />
+        </property>
+        <property name="hoTen" type="string">
+            <column name="HoTen" length="200" not-null="true" />
+        </property>
+        <property name="gk" type="float">
+            <column name="GK" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="ck" type="float">
+            <column name="CK" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="khac" type="float">
+            <column name="Khac" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="tongDiem" type="float">
+            <column name="TongDiem" precision="12" scale="0" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

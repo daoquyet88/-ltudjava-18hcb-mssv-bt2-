@@ -5,6 +5,21 @@
  */
 package doan_hibernate_qlsv;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
+import DAO.*;
+import entities.*;
+import java.io.FileReader;
+import java.util.List;
+import javafx.scene.shape.Mesh;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Admin
@@ -14,8 +29,108 @@ public class LopHocWindow extends javax.swing.JPanel {
     /**
      * Creates new form LopHocWindow
      */
+    String path="";
+    SinhVienDAO svDAO=new SinhVienDAO();
     public LopHocWindow() {
         initComponents();
+        loadON();
+    }
+    public void loadON(){
+        LoadData();
+        LoadCB();
+    }
+    public void LoadCB()
+    {
+//        DefaultComboBoxModel model=new DefaultComboBoxModel();
+//        //model.addElement(new Sinhvien(path));
+//        for(entities.Sinhvien sv : this.svDAO.load_danhSach())
+//        {
+//            
+//            model.addElement(new Sinhvien(sv.getMaLop()));
+//            //cb_doiBong.addItem(db.getTenDoiBong());
+//        }       
+//
+//        cbLop.setModel(model);
+        cbLop.removeAllItems();
+        List<String> lsCB=svDAO.layMaLop();
+        for(String s : lsCB){
+            cbLop.addItem(s);
+        }
+        
+    }
+    public void docFile(String p) throws FileNotFoundException, IOException{
+        
+        File fileDir = new File(p);
+        // lay ten file 
+        String []tenFile=fileDir.getName().split("\\.");
+        JOptionPane.showMessageDialog(cbLop,"ten file"+tenFile[0]);
+        String maLop=tenFile[0];
+//        BufferedReader br = new BufferedReader(
+//                new InputStreamReader(
+//                        new FileInputStream(fileDir), "UTF8"));    
+        FileReader fr=new FileReader(fileDir);
+        BufferedReader br=new BufferedReader(fr);
+        String[] dataSV;
+        String line = br.readLine();       
+        line = br.readLine();
+        while (line != null) {
+            
+               dataSV = line.split(",");
+            // tao doi tuong lop hoc
+            Sinhvien sv=new Sinhvien();            
+            sv.setStt(Integer.parseInt(dataSV[0]));
+            sv.setMaSv(dataSV[1]);
+            sv.setHoTen(dataSV[2]);
+            sv.setGioiTinh(dataSV[3]);
+            sv.setCmnd(Integer.parseInt(dataSV[4]));
+            sv.setMaLop(maLop);
+            svDAO.add(sv);
+            line = br.readLine();
+        }       
+
+        br.close();
+        //fr.close();
+        JOptionPane.showMessageDialog(cbLop,"Thêm Thành Công");
+        LoadData();
+        
+    }
+    private void LoadData()
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("MSSV");
+        dtm.addColumn("Họ Tên");
+        dtm.addColumn("Giới Tính");
+        dtm.addColumn("CMND");
+        dtm.addColumn("Mã Lớp");
+       
+        for(entities.Sinhvien sv: this.svDAO.load_danhSach())
+        {
+            dtm.addRow(new Object[]{sv.getStt(),sv.getMaSv(),sv.getHoTen(),sv.getGioiTinh(),sv.getCmnd(),sv.getMaLop()});
+            
+        }
+        this.tbSinhVien.setModel(dtm);
+        this.tbSinhVien.repaint();
+        this.tbSinhVien.revalidate();
+    }
+     private void LoadDatadk(String ma)
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("MSSV");
+        dtm.addColumn("Họ Tên");
+        dtm.addColumn("Giới Tính");
+        dtm.addColumn("CMND");
+        dtm.addColumn("Mã Lớp");
+       
+        for(entities.Sinhvien sv: this.svDAO.load_danhSach_DK(ma))
+        {
+            dtm.addRow(new Object[]{sv.getStt(),sv.getMaSv(),sv.getHoTen(),sv.getGioiTinh(),sv.getCmnd(),sv.getMaLop()});
+            
+        }
+        this.tbSinhVien.setModel(dtm);
+        this.tbSinhVien.repaint();
+        this.tbSinhVien.revalidate();
     }
 
     /**
@@ -71,7 +186,7 @@ public class LopHocWindow extends javax.swing.JPanel {
         add(lbPath);
         lbPath.setBounds(221, 17, 65, 16);
 
-        btnLine.setText("Import Danh Sách");
+        btnLine.setText("Import Lớp Học");
         btnLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLineActionPerformed(evt);
@@ -195,93 +310,69 @@ public class LopHocWindow extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbLopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLopItemStateChanged
-//
-//        if(cbLop.getSelectedItem()!=null){
-//            try {
-//                String name = cbLop.getSelectedItem().toString();
-//                String file = "D:\\File CSV\\" + name + ".csv";
-//                path=file;
-//                //JOptionPane.showMessageDialog(cbLop, name);
-//                docFile(file);
-//            } catch (IOException ex) {
-//
-//            }
-//        }
+
+        if(cbLop.getSelectedItem()!=null){
+            String name = cbLop.getSelectedItem().toString();
+            LoadDatadk(name);
+        }
 
     }//GEN-LAST:event_cbLopItemStateChanged
 
     private void btnLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLineActionPerformed
-//
-//        JFileChooser file =new JFileChooser();
-//        file.setCurrentDirectory(new File(System.getProperty("user.home")));
-//
-//        // FileNameExtensionFilter fileter=new FileNameExtensionFilter("*.images","jpg","png");
-//        //file.addChoosableFileFilter(fileter);
-//        int result=file.showSaveDialog(this);
-//        if(result==JFileChooser.APPROVE_OPTION)
-//        {
-//            File selectedFile=file.getSelectedFile();
-//            path=selectedFile.getAbsolutePath();
-//            //lbImg.setIcon(ResizeImage(path,null));
-//            lbPath.setText(path);
-//        }
-//        else{
-//            System.out.println("NO file select");
-//        }
-//
-//        try {
-//            // TODO add your handling code here:
-//            String []data;
-//            String fileGoc="D:\\File CSV\\";
-//            File f=new File(path);
-//            String name=f.getName();
-//            data=name.split("\\.");
-//            String fileName=f.getName();
-//            String fileKT=fileGoc+fileName;
-//            File fKT=new  File(fileKT);
-//            if(fKT.exists()){
-//                JOptionPane.showMessageDialog(cbLop,"File Da ton tai");
-//            }
-//            else{
-//
-//                Path source = Paths.get(path);
-//
-//                // Destination file.
-//                Path destination = Paths.get(fileKT);
-//
-//                try {
-//                    copyFile(source, destination);
-//                } catch (IOException e) {
-//                    System.out.println("Lỗi Khi copy File");
-//                    e.printStackTrace();
-//                }
-//
-//                ghiFileLopHoc("D:\\File CSV\\dslop.csv",data[0]);
-//                docFile(fileKT);
-//                JOptionPane.showMessageDialog(cbLop,"import Thành Công");
-//                load();
-//            }
-//
-//        } catch (IOException ex) {
-//            Logger.getLogger(DSSinhVienWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        // thu muc goc
-//
-//        //lbThongBao.setText("Thông Tin Danh Sách Sinh Viên Lớp : "+nameFile);
+
+        JFileChooser file =new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        // FileNameExtensionFilter fileter=new FileNameExtensionFilter("*.images","jpg","png");
+        //file.addChoosableFileFilter(fileter);
+        int result=file.showSaveDialog(this);
+        if(result==JFileChooser.APPROVE_OPTION)
+        {
+            File selectedFile=file.getSelectedFile();
+            path=selectedFile.getAbsolutePath();
+            //lbImg.setIcon(ResizeImage(path,null));
+            lbPath.setText(path);
+        }
+        else{
+            System.out.println("NO file select");
+        }
+        try {
+            docFile(path);
+        } catch (Exception e) {
+        }
+        LoadData();
+        LoadCB();
     }//GEN-LAST:event_btnLineActionPerformed
 
     private void btnThemSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemSVActionPerformed
-//        tbSinhVien.getRowCount();
-//        try {
-//            ghiFile(path);
-//        } catch (IOException ex) {
-//            Logger.getLogger(DSSinhVienWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        try {
-//            docFile(path);
-//        } catch (IOException ex) {
-//            Logger.getLogger(DSSinhVienWindow.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        if(txtCMND.getText().equals("")||txtHoTen.getText().equals("")||txtMSSV.getText().equals("")){
+            JOptionPane.showMessageDialog(cbLop,"Nhap Day du thong tin");
+            return;
+        }
+        if(rdNam.isSelected()==false&&rdNu.isSelected()==false){
+            JOptionPane.showMessageDialog(cbLop,"Nhap Day du thong tin");
+            return;
+        }
+        int stt=tbSinhVien.getRowCount();
+        Sinhvien sv=new Sinhvien();
+        String maLop=cbLop.getSelectedItem().toString();
+        sv.setStt(stt+1);
+        sv.setMaSv(txtMSSV.getText());
+        sv.setHoTen(txtHoTen.getText());
+        sv.setCmnd(Integer.parseInt(txtCMND.getText()));
+        if(rdNam.isSelected()){
+            sv.setGioiTinh("Nam");
+        }else{
+            sv.setGioiTinh("Nu");
+        }
+        
+        sv.setMaLop(maLop);
+        try {
+            svDAO.add(sv);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(cbLop,"Them That bai");
+        }
+        LoadDatadk(maLop);
     }//GEN-LAST:event_btnThemSVActionPerformed
 
 
