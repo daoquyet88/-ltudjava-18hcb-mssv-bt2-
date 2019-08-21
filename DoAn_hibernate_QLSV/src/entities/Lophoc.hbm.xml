@@ -3,19 +3,13 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Aug 21, 2019 6:05:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entities.Taikhoan" table="taikhoan" catalog="giaovu" optimistic-lock="version">
-        <id name="useName" type="string">
-            <column name="UseName" length="200" />
+    <class name="entities.Lophoc" table="lophoc" catalog="giaovu" optimistic-lock="version">
+        <id name="maLop" type="string">
+            <column name="MaLop" length="10" />
             <generator class="identity" />
         </id>
         <property name="stt" type="int">
             <column name="STT" not-null="true" unique="true" />
-        </property>
-        <property name="passWord" type="string">
-            <column name="PassWord" length="200" not-null="true" />
-        </property>
-        <property name="quyen" type="int">
-            <column name="Quyen" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

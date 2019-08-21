@@ -40,11 +40,7 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
         load();
     }
     public void load() throws IOException{
-         String file="D:\\File CSV\\dslop.csv";
-         docFileLH(file);
-         File f=new File(file);
-        String nameFile=f.getName();
-        lbThongBao.setText("Thông Tin Môn Học Lớp : "+nameFile);
+         
        
     }
     public void taoFileLopMH(String p) throws UnsupportedEncodingException, FileNotFoundException, IOException{
@@ -119,13 +115,16 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
           while(line != null){
               dataSV=line.split(",");
                 Monhoc mh=new Monhoc();
-                mh.setId(dataSV[1]);
+                MonhocId mhid=new MonhocId();
+                
+                mhid.setMaMon(dataSV[1]);
+                mhid.setMaLop("17hcb");
+                mh.setId(mhid);
                 mh.setStt(Integer.parseInt(dataSV[0]));
                 mh.setTenMh(dataSV[2]);
                 mh.setPhongHoc(dataSV[3]);
                 tkbDAO.add(mh);
-                line = br.readLine();
-               line =br.readLine();
+                line =br.readLine();
           }
         br.close();
         //fr.close();
