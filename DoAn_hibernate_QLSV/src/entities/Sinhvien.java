@@ -1,5 +1,5 @@
 package entities;
-// Generated Aug 20, 2019 9:52:04 PM by Hibernate Tools 4.3.1
+// Generated Aug 21, 2019 10:33:34 AM by Hibernate Tools 4.3.1
 
 
 
@@ -19,10 +19,6 @@ public class Sinhvien  implements java.io.Serializable {
     public Sinhvien() {
     }
 
-    public Sinhvien(String maLop) {
-        this.maLop = maLop;
-    }
-    
     public Sinhvien(String maSv, int stt, String hoTen, String gioiTinh, int cmnd, String maLop) {
        this.maSv = maSv;
        this.stt = stt;
@@ -73,11 +69,6 @@ public class Sinhvien  implements java.io.Serializable {
     
     public void setMaLop(String maLop) {
         this.maLop = maLop;
-    }
-
-    @Override
-    public String toString() {
-        return maLop;
     }
 
 

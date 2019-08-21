@@ -5,6 +5,7 @@
  */
 package doan_hibernate_qlsv;
 
+import entities.Sinhvien;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +21,8 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import DAO.*;
+import entities.*;
 
 /**
  *
@@ -32,6 +34,7 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
      * Creates new form ThoiKhoaBieuWindow
      */
     String path="";
+    TKBDAO tkbDAO=new TKBDAO();
     public ThoiKhoaBieuWindow() throws IOException {
         initComponents();
         load();
@@ -103,31 +106,30 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
 //        lbThongBao.setText("Thông Tin Danh Sách Sinh Viên Lớp : "+nameFile);
 //    }
     public void docFile(String p) throws FileNotFoundException, IOException{
-        DefaultTableModel dtm=new DefaultTableModel();       
-         
         File fileDir = new File(p);
 			
 		BufferedReader br = new BufferedReader(
 		   new InputStreamReader(
                       new FileInputStream(fileDir), "UTF8"));
-        String [] NameSV;
+        
         String []dataSV;
         String line = br.readLine();
-        NameSV=line.split(",");
-        for(int i=0;i<NameSV.length;i++){
-            dtm.addColumn(String.valueOf(NameSV[i]));
-        }         
+        
         line = br.readLine();
           while(line != null){
               dataSV=line.split(",");
-               dtm.addRow(new Object[]{dataSV[0],dataSV[1],dataSV[2],dataSV[3]});
-              line =br.readLine();
+                Monhoc mh=new Monhoc();
+                mh.setId(dataSV[1]);
+                mh.setStt(Integer.parseInt(dataSV[0]));
+                mh.setTenMh(dataSV[2]);
+                mh.setPhongHoc(dataSV[3]);
+                tkbDAO.add(mh);
+                line = br.readLine();
+               line =br.readLine();
           }
         br.close();
         //fr.close();
-         this.tbTKB.setModel(dtm);
-        this.tbTKB.repaint();
-        this.tbTKB.revalidate();
+         
     }
 
     /**
@@ -255,61 +257,28 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnimportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimportActionPerformed
-//////        
-//////        JFileChooser file =new JFileChooser();
-//////       file.setCurrentDirectory(new File(System.getProperty("user.home")));
-//////       
-//////       // FileNameExtensionFilter fileter=new FileNameExtensionFilter("*.images","jpg","png");
-//////        //file.addChoosableFileFilter(fileter);
-//////        int result=file.showSaveDialog(this);
-//////        if(result==JFileChooser.APPROVE_OPTION)
-//////        {
-//////            File selectedFile=file.getSelectedFile();
-//////            path=selectedFile.getAbsolutePath();
-//////            //lbImg.setIcon(ResizeImage(path,null));
-//////            lbDuongDan.setText(path);
-//////        }
-//////        else{
-//////            System.out.println("NO file select");
-//////        }
-//////        
-//////        try {
-//////            // TODO add your handling code here:
-//////               // TODO add your handling code here:
-//////        String []data;
-//////        String fileGoc="D:\\File CSV\\";
-//////        File f=new File(path);
-//////        String name=f.getName();
-//////        data=name.split("\\.");
-//////        String fileName=f.getName();
-//////        String fileKT=fileGoc+fileName;
-//////        File fKT=new  File(fileKT);
-//////        if(fKT.exists()){
-//////            JOptionPane.showMessageDialog(cbLop,"File Da ton tai");
-//////        }
-//////        else{
-//////            JOptionPane.showMessageDialog(cbLop,"import Thành Công");
-//////            Path source = Paths.get(path);
-////// 
-//////		// Destination file.
-//////		Path destination = Paths.get(fileKT);
-//////		
-//////		try {
-//////			copyFile(source, destination);
-//////		} catch (IOException e) {
-//////			System.out.println("Lỗi Khi copy File");
-//////			e.printStackTrace();
-//////		}
-//////            docFile(fileKT);
-//////            taoFileLopMH(fileKT);
-//////        }
-//////            
-//////        } catch (IOException ex) {
-//////            Logger.getLogger(DSSinhVienWindow.class.getName()).log(Level.SEVERE, null, ex);
-//////        }
-//////        File f=new File(path);
-//////        String nameFile=f.getName();
-//////        lbThongBao.setText("Thông Tin Danh Sách Sinh Viên Lớp : "+nameFile);
+        JFileChooser file =new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        // FileNameExtensionFilter fileter=new FileNameExtensionFilter("*.images","jpg","png");
+        //file.addChoosableFileFilter(fileter);
+        int result=file.showSaveDialog(this);
+        if(result==JFileChooser.APPROVE_OPTION)
+        {
+            File selectedFile=file.getSelectedFile();
+            path=selectedFile.getAbsolutePath();
+            //lbImg.setIcon(ResizeImage(path,null));
+            //lbPath.setText(path);
+        }
+        else{
+            System.out.println("NO file select");
+        }
+        try {
+            docFile(path);
+        } catch (Exception e) {
+        }
+//        LoadData();
+//        LoadCB(); 
     }//GEN-LAST:event_btnimportActionPerformed
 
     private void cbLopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLopItemStateChanged
