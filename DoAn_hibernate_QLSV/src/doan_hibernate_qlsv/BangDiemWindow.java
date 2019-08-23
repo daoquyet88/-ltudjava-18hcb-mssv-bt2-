@@ -94,6 +94,28 @@ public class BangDiemWindow extends javax.swing.JPanel {
         this.tbBangDiem.repaint();
         this.tbBangDiem.revalidate();
     }
+    private void loadDataDK(String maLop, String maMonHoc)
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("Ma Lop");
+        dtm.addColumn("Ma Mon");
+        dtm.addColumn("Ma SV");
+        dtm.addColumn("Ho Ten");
+        dtm.addColumn("Diem GK");
+        dtm.addColumn("Diem CK");
+        dtm.addColumn("Diem Khac");
+        dtm.addColumn("Diem Tong");
+       
+        for(entities.Bangdiem bd: this.bdDAO.load_danhSach_DK(maLop, maMonHoc))
+        {
+            dtm.addRow(new Object[]{bd.getStt(),bd.getId().getMaLop(),bd.getId().getMaMon(),bd.getId().getMaSv(),bd.getHoTen(),bd.getGk(),bd.getCk(),bd.getKhac(),bd.getTongDiem()});
+            
+        }
+        this.tbBangDiem.setModel(dtm);
+        this.tbBangDiem.repaint();
+        this.tbBangDiem.revalidate();
+    }
     public  void loadCbMonHoc(String maLop){
         cbDSMH.removeAllItems();
         List<String> lsCB=bdDAO.layMaMonHoc(maLop);
@@ -312,10 +334,10 @@ public class BangDiemWindow extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tbBangDiem);
 
         cbMonHoc.add(jScrollPane1);
-        jScrollPane1.setBounds(20, 50, 750, 333);
+        jScrollPane1.setBounds(20, 50, 840, 320);
 
         add(cbMonHoc);
-        cbMonHoc.setBounds(300, 50, 780, 399);
+        cbMonHoc.setBounds(300, 50, 880, 380);
 
         jButton2.setText("Sửa Điểm");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -324,7 +346,7 @@ public class BangDiemWindow extends javax.swing.JPanel {
             }
         });
         add(jButton2);
-        jButton2.setBounds(428, 463, 89, 30);
+        jButton2.setBounds(397, 463, 120, 40);
 
         jButton3.setText("Thống Kê");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -333,7 +355,7 @@ public class BangDiemWindow extends javax.swing.JPanel {
             }
         });
         add(jButton3);
-        jButton3.setBounds(593, 463, 87, 30);
+        jButton3.setBounds(570, 460, 110, 40);
 
         pnPhanTram.setBackground(new java.awt.Color(255, 204, 255));
 
@@ -379,15 +401,16 @@ public class BangDiemWindow extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnPhanTramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lbdau)
                         .addComponent(lbdaupt)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(pnPhanTramLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(lbrot)
-                    .addComponent(lbrotpt)))
+                    .addComponent(lbrotpt))
+                .addContainerGap())
         );
 
         add(pnPhanTram);
-        pnPhanTram.setBounds(720, 440, 250, 80);
+        pnPhanTram.setBounds(720, 440, 250, 70);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnImpỏtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpỏtActionPerformed
@@ -452,34 +475,30 @@ public class BangDiemWindow extends javax.swing.JPanel {
 		Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 	}
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-//         String ma=((MonHoc)cbDSMH.getSelectedItem()).getMaMH();
-//        String name=cbLop.getSelectedItem().toString();
-//        String file="D:\\File CSV\\"+name+"_"+ma+"_KQ.csv";
-//        lineAll=file;
-//       JOptionPane.showMessageDialog(cbLop,file);
-//        try {
-//            docFile(file);
-//        } catch (IOException ex) {
-//            JOptionPane.showMessageDialog(cbLop,"chua co bang diem");
-//        }
+        String maMH=cbDSMH.getSelectedItem().toString();
+        String maLop=cbLop.getSelectedItem().toString();       
+        loadDataDK(maLop,maMH);
+        
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-//       try{          
-//        String stt=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),0).toString();
-//        String mssv=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),1).toString();
-//        String ht=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),2).toString();
-//        String gk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),3).toString();
-//        String ck=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
-//        String dk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),5).toString();
-//        String td=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),6).toString();
-//       String l=lineAll;
-//        SuaDiemFrame sdf=new SuaDiemFrame(stt, mssv, ht, gk, ck, dk, td,l);
-//        sdf.show(true);
-//        }
-//       catch(Exception e){
-//           JOptionPane.showMessageDialog(cbLop,"Chon dong Sinh Vien Can Sua");
-//       }
+       try{          
+        String stt=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),0).toString();
+        String mssv=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),2).toString();
+        String maLop=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),1).toString();
+        String maMon=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
+        String ht=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
+        String gk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),5).toString();
+        String ck=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),6).toString();
+        String dk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),7).toString();
+        String td=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),8).toString();
+       String l=lineAll;
+        SuaDiemFrame sdf=new SuaDiemFrame(stt,maLop,maMon, mssv, ht, gk, ck, dk, td,l);
+        sdf.show(true);
+        }
+       catch(Exception e){
+           JOptionPane.showMessageDialog(cbLop,"Chon dong Sinh Vien Can Sua");
+       }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -495,7 +514,7 @@ public class BangDiemWindow extends javax.swing.JPanel {
     private void cbLopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLopActionPerformed
           if(cbLop.getSelectedItem()!=null){
             String maLop = cbLop.getSelectedItem().toString();
-           // JOptionPane.showMessageDialog(cbLop,"kq="+maLop);
+            //JOptionPane.showMessageDialog(cbLop,"kq="+maLop);
             loadCbMonHoc(maLop);
         }
     }//GEN-LAST:event_cbLopActionPerformed

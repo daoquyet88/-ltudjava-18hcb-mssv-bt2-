@@ -21,6 +21,10 @@ public class BangdiemId  implements java.io.Serializable {
        this.maMon = maMon;
        this.maSv = maSv;
     }
+
+    public BangdiemId(String maLop) {
+        this.maLop = maLop;
+    }
    
     public String getMaLop() {
         return this.maLop;

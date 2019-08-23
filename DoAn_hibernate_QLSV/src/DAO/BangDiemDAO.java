@@ -6,6 +6,7 @@
 package DAO;
 import entities.*;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -47,6 +48,7 @@ public class BangDiemDAO {
             transaction.commit();
             return true;
         } catch (HibernateException e) {
+            JOptionPane.showMessageDialog(null,"loi: " +e);
             return false;
         }
     }
@@ -98,14 +100,15 @@ public class BangDiemDAO {
         transacsion.commit();
         return list_ntt;        
     }
-    public List<Sinhvien> load_danhSach_DK(String ma) 
+    public List<Bangdiem> load_danhSach_DK(String maLop, String maMonHoc) 
     {
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
         // lenh hql
-        String hql="from Sinhvien s where s.maLop='"+ma+"'";
+        String hql="from Bangdiem bd  where bd.id.maLop='"+maLop+"'"
+                + "and bd.id.maMon='"+maMonHoc+"'";
         Query query=session.createQuery(hql);
-        List<Sinhvien> list_ntt=query.list();
+        List<Bangdiem> list_ntt=query.list();
         transacsion.commit();
         return list_ntt;        
     }
