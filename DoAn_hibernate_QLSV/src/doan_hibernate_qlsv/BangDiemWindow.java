@@ -39,32 +39,21 @@ public class BangDiemWindow extends javax.swing.JPanel {
     BangDiemDAO bdDAO=new BangDiemDAO();
     public BangDiemWindow() throws IOException {
         initComponents();
-        //load();
+        load();
         
     }
     public void load() throws IOException{
         pnPhanTram.setVisible(false);
+        try{
+        loadData();
+        loadCbLopHoc();
+        }catch(Exception e){
+            return;
+        }
+        
         
     }
-    private void LoadData()
-    {
-        DefaultTableModel dtm=new DefaultTableModel();
-        dtm.addColumn("STT");
-        dtm.addColumn("MSSV");
-        dtm.addColumn("Họ Tên");
-        dtm.addColumn("Giới Tính");
-        dtm.addColumn("CMND");
-        dtm.addColumn("Mã Lớp");
-       
-        for(entities.Sinhvien sv: this.svDAO.load_danhSach())
-        {
-            dtm.addRow(new Object[]{sv.getStt(),sv.getMaSv(),sv.getHoTen(),sv.getGioiTinh(),sv.getCmnd(),sv.getMaLop()});
-            
-        }
-        this.tbBangDiem.setModel(dtm);
-        this.tbBangDiem.repaint();
-        this.tbBangDiem.revalidate();
-    }public void LoadCB()
+    public void loadCbLopHoc()
     {
 //        DefaultComboBoxModel model=new DefaultComboBoxModel();
 //        //model.addElement(new Sinhvien(path));
@@ -77,11 +66,40 @@ public class BangDiemWindow extends javax.swing.JPanel {
 //
 //        cbLop.setModel(model);
         cbLop.removeAllItems();
-        List<String> lsCB=svDAO.layMaLop();
+        List<String> lsCB=bdDAO.layMaLop();
         for(String s : lsCB){
             cbLop.addItem(s);
         }
         
+    }
+    private void loadData()
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("Ma Lop");
+        dtm.addColumn("Ma Mon");
+        dtm.addColumn("Ma SV");
+        dtm.addColumn("Ho Ten");
+        dtm.addColumn("Diem GK");
+        dtm.addColumn("Diem CK");
+        dtm.addColumn("Diem Khac");
+        dtm.addColumn("Diem Tong");
+       
+        for(entities.Bangdiem bd: this.bdDAO.load_danhSach())
+        {
+            dtm.addRow(new Object[]{bd.getStt(),bd.getId().getMaLop(),bd.getId().getMaMon(),bd.getId().getMaSv(),bd.getHoTen(),bd.getGk(),bd.getCk(),bd.getKhac(),bd.getTongDiem()});
+            
+        }
+        this.tbBangDiem.setModel(dtm);
+        this.tbBangDiem.repaint();
+        this.tbBangDiem.revalidate();
+    }
+    public  void loadCbMonHoc(String maLop){
+        cbDSMH.removeAllItems();
+        List<String> lsCB=bdDAO.layMaMonHoc(maLop);
+        for(int i=0;i<lsCB.size();i++){
+            cbDSMH.addItem(lsCB.get(i));
+        }
     }
     public void docFile(String p) throws FileNotFoundException, IOException{
         try{
@@ -160,26 +178,7 @@ public class BangDiemWindow extends javax.swing.JPanel {
 //        this.tbMonHoc.repaint();
 //        this.tbMonHoc.revalidate();
     }
-    public void docFileLH(String p) throws FileNotFoundException, IOException{
-       
-        File fileDir = new File(p);
-			
-		BufferedReader br = new BufferedReader(
-		   new InputStreamReader(
-                      new FileInputStream(fileDir), "UTF8"));      
-        String []dataSV;
-        String line = br.readLine();      
-          
-        line = br.readLine();
-          while(line != null){
-              dataSV=line.split(",");
-              cbLop.addItem(dataSV[0]);
-              line =br.readLine();
-          }
-        br.close();
-       // fr.close();
-        
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -392,6 +391,7 @@ public class BangDiemWindow extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnImpỏtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpỏtActionPerformed
+        
         JFileChooser file =new JFileChooser();
         file.setCurrentDirectory(new File(System.getProperty("user.home")));
 
@@ -411,10 +411,15 @@ public class BangDiemWindow extends javax.swing.JPanel {
         try {
             docFile(path);
             JOptionPane.showMessageDialog(cbLop,"Thêm Thành công");
+            loadData();
+            loadCbLopHoc();
+            
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(cbLop,"loi them du lieu");
         }
-        LoadData();
-        LoadCB();
+        //loadData();
+        
+        
     }//GEN-LAST:event_btnImpỏtActionPerformed
     public void loadcb1(String p) throws FileNotFoundException, IOException{
 //        
@@ -488,7 +493,11 @@ public class BangDiemWindow extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void cbLopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLopActionPerformed
-        // TODO add your handling code here:
+          if(cbLop.getSelectedItem()!=null){
+            String maLop = cbLop.getSelectedItem().toString();
+           // JOptionPane.showMessageDialog(cbLop,"kq="+maLop);
+            loadCbMonHoc(maLop);
+        }
     }//GEN-LAST:event_cbLopActionPerformed
 
 

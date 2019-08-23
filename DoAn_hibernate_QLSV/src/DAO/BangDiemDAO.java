@@ -113,7 +113,17 @@ public class BangDiemDAO {
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
         // lenh hql
-        String hql="select distinct s.maLop from Sinhvien s";
+        String hql="select distinct s.id.maLop from Bangdiem s";
+        Query query=session.createQuery(hql);
+        List<String> list_ntt=query.list();
+        transacsion.commit();
+        return list_ntt;     
+    }
+    public List<String> layMaMonHoc(String maLop){
+        Session session =HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transacsion=session.beginTransaction();
+        // lenh hql
+        String hql="select distinct s.id.maMon from Bangdiem s where s.id.maLop='"+maLop+"'";
         Query query=session.createQuery(hql);
         List<String> list_ntt=query.list();
         transacsion.commit();
