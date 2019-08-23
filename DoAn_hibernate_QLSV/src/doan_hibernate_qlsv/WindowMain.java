@@ -256,7 +256,7 @@ public class WindowMain extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         try {
-            showPanel(new BangDiemSVWindow());
+            showPanel(new BangDiemSVWindow(use));
         } catch (IOException ex) {
             Logger.getLogger(WindowMain.class.getName()).log(Level.SEVERE, null, ex);
         }

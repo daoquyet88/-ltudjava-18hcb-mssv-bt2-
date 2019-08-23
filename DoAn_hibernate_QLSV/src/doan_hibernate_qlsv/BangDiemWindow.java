@@ -36,7 +36,7 @@ public class BangDiemWindow extends javax.swing.JPanel {
     BangDiemDAO bdDAO=new BangDiemDAO();
     public BangDiemWindow() throws IOException {
         initComponents();
-        load();
+        //load();
         
     }
     public void load() throws IOException{

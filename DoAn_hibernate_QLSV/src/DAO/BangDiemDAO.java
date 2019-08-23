@@ -112,6 +112,17 @@ public class BangDiemDAO {
         transacsion.commit();
         return list_ntt;        
     }
+    public List<Bangdiem> loadBangDiemSV(String maSV) 
+    {
+        Session session =HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transacsion=session.beginTransaction();
+        // lenh hql
+        String hql="from Bangdiem bd  where bd.id.maSv='"+maSV+"'";
+        Query query=session.createQuery(hql);
+        List<Bangdiem> list_ntt=query.list();
+        transacsion.commit();
+        return list_ntt;        
+    }
    
     public List<String> layMaLop(){
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();

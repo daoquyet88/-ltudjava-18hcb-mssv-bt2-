@@ -25,7 +25,8 @@ public class BangDiemSVWindow extends javax.swing.JPanel {
      * Creates new form SinhVienWindow
      */
     String maDangNhap="";
-    public BangDiemSVWindow() throws IOException {
+    BangDiemDAO bdDAO=new BangDiemDAO();
+    public BangDiemSVWindow( ) throws IOException {
         initComponents();
         
     }
@@ -35,8 +36,31 @@ public class BangDiemSVWindow extends javax.swing.JPanel {
         load();
         //JOptionPane.showMessageDialog(this,maDangNhap);
     }
+    
     public void load() throws IOException{
+       loadData();
+    }
+     private void loadData()
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("Ma Lop");
+        dtm.addColumn("Ma Mon");
+        dtm.addColumn("Ma SV");
+        dtm.addColumn("Ho Ten");
+        dtm.addColumn("Diem GK");
+        dtm.addColumn("Diem CK");
+        dtm.addColumn("Diem Khac");
+        dtm.addColumn("Diem Tong");
        
+        for(entities.Bangdiem bd: this.bdDAO.loadBangDiemSV(maDangNhap))
+        {
+            dtm.addRow(new Object[]{bd.getStt(),bd.getId().getMaLop(),bd.getId().getMaMon(),bd.getId().getMaSv(),bd.getHoTen(),bd.getGk(),bd.getCk(),bd.getKhac(),bd.getTongDiem()});
+            
+        }
+        this.tbBangDiem.setModel(dtm);
+        this.tbBangDiem.repaint();
+        this.tbBangDiem.revalidate();
     }
     
     public void loadcb1(String p) throws FileNotFoundException, IOException{
