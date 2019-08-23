@@ -21,17 +21,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import entities.*;
 import DAO.*;
+import java.awt.Color;
 /**
  *
  * @author Admin
  */
 public class BangDiemWindow extends javax.swing.JPanel {
 
-    /**
-     * Creates new form BangDiemWindow
-     */
     String path="";
-    String lineAll;
     double hon5=0;
     double kem5;
     double tongHS=0;
@@ -109,6 +106,14 @@ public class BangDiemWindow extends javax.swing.JPanel {
        
         for(entities.Bangdiem bd: this.bdDAO.load_danhSach_DK(maLop, maMonHoc))
         {
+            tongHS++;
+            if(bd.getTongDiem()>=5){
+                hon5++;
+            }
+            else{
+                kem5++;
+                tbBangDiem.setBackground(Color.yellow);
+            }
             dtm.addRow(new Object[]{bd.getStt(),bd.getId().getMaLop(),bd.getId().getMaMon(),bd.getId().getMaSv(),bd.getHoTen(),bd.getGk(),bd.getCk(),bd.getKhac(),bd.getTongDiem()});
             
         }
@@ -484,16 +489,16 @@ public class BangDiemWindow extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        try{          
         String stt=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),0).toString();
-        String mssv=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),2).toString();
+        String mssv=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),3).toString();
         String maLop=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),1).toString();
-        String maMon=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
+        String maMon=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),2).toString();
         String ht=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
         String gk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),5).toString();
         String ck=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),6).toString();
         String dk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),7).toString();
         String td=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),8).toString();
-       String l=lineAll;
-        SuaDiemFrame sdf=new SuaDiemFrame(stt,maLop,maMon, mssv, ht, gk, ck, dk, td,l);
+       
+        SuaDiemFrame sdf=new SuaDiemFrame(stt,maLop,maMon, mssv, ht, gk, ck, dk, td);
         sdf.show(true);
         }
        catch(Exception e){

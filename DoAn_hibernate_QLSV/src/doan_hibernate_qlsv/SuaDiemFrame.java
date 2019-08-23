@@ -33,7 +33,7 @@ public class SuaDiemFrame extends javax.swing.JFrame {
     public SuaDiemFrame() {
         initComponents();
     }
-    public SuaDiemFrame(String stt,String maLop,String maMon,String mssv,String hoTen,String gk,String ck,String dk,String td,String line) {
+    public SuaDiemFrame(String stt,String maLop,String maMon,String mssv,String hoTen,String gk,String ck,String dk,String td) {
         initComponents();
         txtSTT.setText(stt);
         txtMSSV.setText(mssv);
@@ -42,6 +42,7 @@ public class SuaDiemFrame extends javax.swing.JFrame {
         txtCK.setText(ck);
         txtDiemKhac.setText(dk);
         lbtd.setText(td);
+        
        txtMaLop.setText(maLop);
        txtMaMon.setText(maMon);
         
@@ -179,11 +180,7 @@ public class SuaDiemFrame extends javax.swing.JFrame {
 
         jLabel8.setText("Mã Lớp");
 
-        txtMaLop.setText("jTextField1");
-
         jLabel9.setText("Mã Môn ");
-
-        txtMaMon.setText("jTextField2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -292,15 +289,23 @@ public class SuaDiemFrame extends javax.swing.JFrame {
        String maLop=txtMaLop.getText();
        String maMon=txtMaMon.getText();
        int stt =Integer.parseInt(txtSTT.getText());
-       String mssv = txtMSSV.getText();
+       String maSV = txtMSSV.getText();
        String hoTen = txtHoTen.getText();
        float gk =Float.parseFloat(txtGK.getText());
        float ck=Float.parseFloat(txtCK.getText());
        float dk=Float.parseFloat(txtDiemKhac.getText());
        float td=Float.parseFloat(lbtd.getText());       
         try {
-            BangdiemId bangdiemId=new BangdiemId(maLop,maMon,mssv);
-            Bangdiem bd=new Bangdiem(bangdiemId,stt, hoTen, gk, ck, dk, td);
+              BangdiemId bangdiemId=new BangdiemId(maLop,maMon,maSV);
+              Bangdiem bd=bdDAO.load(bangdiemId);
+              bd.setHoTen(hoTen);
+              bd.setStt(stt);
+              bd.setGk(gk);
+              bd.setCk(ck);
+              bd.setKhac(dk);
+              bd.setTongDiem(td);
+              System.out.println(" kq"+ bd);
+            //Bangdiem bd=new Bangdiem(bangdiemId,stt, hoTen, gk, ck, dk, td);
             if(bdDAO.update(bd)){
                 JOptionPane.showMessageDialog(thoat,"Cap Nhap Thanh Cong");
             }else{

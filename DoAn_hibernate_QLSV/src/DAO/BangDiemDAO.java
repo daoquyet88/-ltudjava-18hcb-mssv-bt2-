@@ -68,13 +68,13 @@ public class BangDiemDAO {
     }
 
    // tra ra 1 dong lop hoc vs ma
-    public Sinhvien load(String masv) 
+    public Bangdiem load(BangdiemId id) 
     {
         Session session=HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction=session.beginTransaction();
-        Sinhvien sv =(Sinhvien) session.get(Sinhvien.class,masv);
+        Bangdiem bd =(Bangdiem) session.get(Bangdiem.class,id);
         transaction.commit();
-        return sv;
+        return bd;
     }
 
  
@@ -112,6 +112,7 @@ public class BangDiemDAO {
         transacsion.commit();
         return list_ntt;        
     }
+   
     public List<String> layMaLop(){
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
