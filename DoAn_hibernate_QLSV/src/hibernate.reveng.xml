@@ -2,10 +2,12 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="giaovu"/>
-  <table-filter match-name="monhoc"/>
-  <table-filter match-name="taikhoan"/>
-  <table-filter match-name="lophoc"/>
-  <table-filter match-name="dkmh"/>
   <table-filter match-name="sinhvien"/>
   <table-filter match-name="bangdiem"/>
+  <table-filter match-name="monhoc"/>
+  <table-filter match-name="phuckhao"/>
+  <table-filter match-name="taikhoan"/>
+  <table-filter match-name="dkmh"/>
+  <table-filter match-name="lophoc"/>
+  <table-filter match-name="svphuckhao"/>
 </hibernate-reverse-engineering>

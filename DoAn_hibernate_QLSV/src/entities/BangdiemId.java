@@ -1,5 +1,5 @@
 package entities;
-// Generated Aug 21, 2019 6:05:04 PM by Hibernate Tools 4.3.1
+// Generated Aug 23, 2019 10:11:20 PM by Hibernate Tools 4.3.1
 
 
 
@@ -20,10 +20,6 @@ public class BangdiemId  implements java.io.Serializable {
        this.maLop = maLop;
        this.maMon = maMon;
        this.maSv = maSv;
-    }
-
-    public BangdiemId(String maLop) {
-        this.maLop = maLop;
     }
    
     public String getMaLop() {

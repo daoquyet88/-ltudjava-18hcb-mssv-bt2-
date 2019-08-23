@@ -1,5 +1,5 @@
 package entities;
-// Generated Aug 21, 2019 6:05:04 PM by Hibernate Tools 4.3.1
+// Generated Aug 23, 2019 10:11:20 PM by Hibernate Tools 4.3.1
 
 
 
@@ -15,11 +15,6 @@ public class Monhoc  implements java.io.Serializable {
      private String phongHoc;
 
     public Monhoc() {
-    }
-
-    public Monhoc(MonhocId id, String tenMh) {
-        this.id = id;
-        this.tenMh = tenMh;
     }
 
     public Monhoc(MonhocId id, int stt, String tenMh, String phongHoc) {
@@ -56,11 +51,6 @@ public class Monhoc  implements java.io.Serializable {
     
     public void setPhongHoc(String phongHoc) {
         this.phongHoc = phongHoc;
-    }
-
-    @Override
-    public String toString() {
-        return "Monhoc{" + "tenMh=" + tenMh + '}';
     }
 
 

@@ -45,8 +45,8 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
     }
     public void load() throws IOException{
           try{  
-         loadData();
-         loadCB();
+                loadData();
+                loadCB();
           }catch(Exception e){
               return;
           }
@@ -124,18 +124,21 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
                 ///them danh sach sv theo khoa hoc
                 for(entities.Sinhvien sv: this.svDAO.load_danhSach_DK(tenlop))
                 {
-                    
-                    Dkmh dkmh=new Dkmh();
-                    DkmhId dkmhId=new DkmhId();
-                    dkmhId.setMaLop(sv.getMaLop());
-                    dkmhId.setMaMon(dataSV[1]);
-                    dkmhId.setMaSv(sv.getMaSv());
-                    dkmh.setStt(sv.getStt());
-                    dkmh.setId(dkmhId);
-                    dkmh.setHoTen(sv.getHoTen());
-                    dkmh.setGioiTinh(sv.getGioiTinh());
-                    dkmh.setCmnd(sv.getCmnd());
-                    dkmhDAO.add(dkmh);                    
+                    try{
+                        Dkmh dkmh=new Dkmh();
+                        DkmhId dkmhId=new DkmhId();
+                        dkmhId.setMaLop(sv.getMaLop());
+                        dkmhId.setMaMon(dataSV[1]);
+                        dkmhId.setMaSv(sv.getMaSv());
+                        dkmh.setStt(sv.getStt());
+                        dkmh.setId(dkmhId);
+                        dkmh.setHoTen(sv.getHoTen());
+                        dkmh.setGioiTinh(sv.getGioiTinh());
+                        dkmh.setCmnd(sv.getCmnd());
+                        dkmhDAO.add(dkmh); 
+                    }catch(Exception e){
+                        JOptionPane.showMessageDialog(cbLop,"Loi tao danh sach dang ky hoc");
+                    }
                 }
                 
                 line =br.readLine();

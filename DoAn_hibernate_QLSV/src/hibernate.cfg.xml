@@ -12,8 +12,10 @@
     <property name="hibernate.connection.characterEncoding">utf8</property>
     <property name="hibernate.connection.useUnicode">true</property>
     <mapping resource="entities/Sinhvien.hbm.xml"/>
+    <mapping resource="entities/Svphuckhao.hbm.xml"/>
     <mapping resource="entities/Bangdiem.hbm.xml"/>
     <mapping resource="entities/Dkmh.hbm.xml"/>
+    <mapping resource="entities/Phuckhao.hbm.xml"/>
     <mapping resource="entities/Monhoc.hbm.xml"/>
     <mapping resource="entities/Taikhoan.hbm.xml"/>
     <mapping resource="entities/Lophoc.hbm.xml"/>
