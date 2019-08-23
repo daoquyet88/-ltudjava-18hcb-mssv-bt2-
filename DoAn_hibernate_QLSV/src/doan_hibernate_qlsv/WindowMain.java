@@ -77,6 +77,11 @@ public class WindowMain extends javax.swing.JFrame {
         });
 
         btnBangDiem.setText("Bảng Điểm ");
+        btnBangDiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBangDiemActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Tạo Phúc KHảo");
 
@@ -174,6 +179,14 @@ public class WindowMain extends javax.swing.JFrame {
             Logger.getLogger(WindowMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnBangDiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBangDiemActionPerformed
+       try {
+            showPanel(new BangDiemWindow());
+        } catch (IOException ex) {
+            Logger.getLogger(WindowMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnBangDiemActionPerformed
 
     /**
      * @param args the command line arguments

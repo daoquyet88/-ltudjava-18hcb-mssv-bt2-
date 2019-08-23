@@ -1,5 +1,6 @@
 package doan_hibernate_qlsv;
 
+import DAO.SinhVienDAO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,14 +12,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import static qlsv_file.DSSinhVienWindow.copyFile;
-
+import entities.*;
+import DAO.*;
 /**
  *
  * @author Admin
@@ -33,30 +35,66 @@ public class BangDiemWindow extends javax.swing.JPanel {
     double hon5=0;
     double kem5;
     double tongHS=0;
+    SinhVienDAO svDAO=new SinhVienDAO();
+    BangDiemDAO bdDAO=new BangDiemDAO();
     public BangDiemWindow() throws IOException {
         initComponents();
-        load();
-        pnPhanTram.setVisible(false);
+        //load();
+        
     }
     public void load() throws IOException{
-//        String file="D:\\File CSV\\18hcb_CTT001_KQ.csv";
-//        path=file;
-//        lineAll=file;
-//        File f=new File(file);
-//        String nameFile=f.getName();
-//        lbThongBao.setText("Quản Lý Bảng Điểm Sinh Viên: "+nameFile);
-//        docFile(file);
-        String lh="D:\\File CSV\\dslop.csv";
-        docFileLH(lh);
+        pnPhanTram.setVisible(false);
+        
+    }
+    private void LoadData()
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("MSSV");
+        dtm.addColumn("Họ Tên");
+        dtm.addColumn("Giới Tính");
+        dtm.addColumn("CMND");
+        dtm.addColumn("Mã Lớp");
+       
+        for(entities.Sinhvien sv: this.svDAO.load_danhSach())
+        {
+            dtm.addRow(new Object[]{sv.getStt(),sv.getMaSv(),sv.getHoTen(),sv.getGioiTinh(),sv.getCmnd(),sv.getMaLop()});
+            
+        }
+        this.tbBangDiem.setModel(dtm);
+        this.tbBangDiem.repaint();
+        this.tbBangDiem.revalidate();
+    }public void LoadCB()
+    {
+//        DefaultComboBoxModel model=new DefaultComboBoxModel();
+//        //model.addElement(new Sinhvien(path));
+//        for(entities.Sinhvien sv : this.svDAO.load_danhSach())
+//        {
+//            
+//            model.addElement(new Sinhvien(sv.getMaLop()));
+//            //cb_doiBong.addItem(db.getTenDoiBong());
+//        }       
+//
+//        cbLop.setModel(model);
+        cbLop.removeAllItems();
+        List<String> lsCB=svDAO.layMaLop();
+        for(String s : lsCB){
+            cbLop.addItem(s);
+        }
         
     }
     public void docFile(String p) throws FileNotFoundException, IOException{
+        try{
         hon5=0;
         kem5=0;
         tongHS=0;
         DefaultTableModel dtm=new DefaultTableModel();       
          
         File fileDir = new File(p);
+        String tenFile=fileDir.getName();
+        String []dataTen=tenFile.split("_");
+        String maLop=dataTen[0];
+        String maMon=dataTen[1];
 			
 		BufferedReader br = new BufferedReader(
 		   new InputStreamReader(
@@ -70,23 +108,33 @@ public class BangDiemWindow extends javax.swing.JPanel {
         }         
         line = br.readLine();
           while(line != null){
-              dataSV=line.split(",");
-              //thong ke
-              tongHS++;
-              if(Float.parseFloat(dataSV[6])>=5){
-                  hon5++;
-              }
-              else{
-                  kem5++;
-              }
-               dtm.addRow(new Object[]{dataSV[0],dataSV[1],dataSV[2],dataSV[3],dataSV[4],dataSV[5],dataSV[6]});
-              line =br.readLine();
+               dataSV = line.split(",");
+            // tao doi tuong lop hoc
+            Bangdiem bd=new Bangdiem();
+            BangdiemId bangdiemId=new BangdiemId();
+            bangdiemId.setMaLop(maLop);
+            bangdiemId.setMaMon(maMon);
+            bangdiemId.setMaSv(dataSV[1]);
+            bd.setId(bangdiemId);
+           bd.setStt(Integer.parseInt(dataSV[0]));
+           bd.setHoTen(dataSV[2]);
+           bd.setGk(Float.parseFloat(dataSV[3]));
+           bd.setCk(Float.parseFloat(dataSV[4]));
+           bd.setKhac(Float.parseFloat(dataSV[5]));
+           bd.setTongDiem(Float.parseFloat(dataSV[6]));
+           
+           bdDAO.add(bd);          
+           
+            line = br.readLine();
           }
         br.close();
         //fr.close();
         this.tbBangDiem.setModel(dtm);
         this.tbBangDiem.repaint();
         this.tbBangDiem.revalidate();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(cbLop,"Them That Bai");
+        }
     }
     public void docFileDSMH(String p) throws FileNotFoundException, IOException{
    
@@ -213,9 +261,13 @@ public class BangDiemWindow extends javax.swing.JPanel {
         );
 
         add(jPanel1);
-        jPanel1.setBounds(10, 65, 0, 380);
+        jPanel1.setBounds(10, 65, 278, 380);
+
+        cbMonHoc.setLayout(null);
 
         jLabel2.setText("Lớp");
+        cbMonHoc.add(jLabel2);
+        jLabel2.setBounds(20, 20, 30, 16);
 
         cbLop.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -227,8 +279,15 @@ public class BangDiemWindow extends javax.swing.JPanel {
                 cbLopActionPerformed(evt);
             }
         });
+        cbMonHoc.add(cbLop);
+        cbLop.setBounds(80, 10, 110, 30);
 
         jLabel3.setText("Môn Học");
+        cbMonHoc.add(jLabel3);
+        jLabel3.setBounds(270, 20, 49, 16);
+
+        cbMonHoc.add(cbDSMH);
+        cbDSMH.setBounds(380, 10, 154, 30);
 
         btnTimKiem.setBackground(new java.awt.Color(255, 102, 102));
         btnTimKiem.setText("Tìm Kiếm");
@@ -237,6 +296,8 @@ public class BangDiemWindow extends javax.swing.JPanel {
                 btnTimKiemActionPerformed(evt);
             }
         });
+        cbMonHoc.add(btnTimKiem);
+        btnTimKiem.setBounds(600, 10, 100, 35);
 
         tbBangDiem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -251,43 +312,11 @@ public class BangDiemWindow extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tbBangDiem);
 
-        javax.swing.GroupLayout cbMonHocLayout = new javax.swing.GroupLayout(cbMonHoc);
-        cbMonHoc.setLayout(cbMonHocLayout);
-        cbMonHocLayout.setHorizontalGroup(
-            cbMonHocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cbMonHocLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(cbMonHocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 671, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(cbMonHocLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbLop, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addGap(29, 29, 29)
-                        .addComponent(cbDSMH, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70)
-                        .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        cbMonHocLayout.setVerticalGroup(
-            cbMonHocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(cbMonHocLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(cbMonHocLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(cbDSMH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        cbMonHoc.add(jScrollPane1);
+        jScrollPane1.setBounds(20, 50, 750, 333);
 
         add(cbMonHoc);
-        cbMonHoc.setBounds(302, 46, 0, 399);
+        cbMonHoc.setBounds(300, 50, 780, 399);
 
         jButton2.setText("Sửa Điểm");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -363,11 +392,10 @@ public class BangDiemWindow extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnImpỏtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpỏtActionPerformed
-       
         JFileChooser file =new JFileChooser();
-       file.setCurrentDirectory(new File(System.getProperty("user.home")));
-       
-       // FileNameExtensionFilter fileter=new FileNameExtensionFilter("*.images","jpg","png");
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        // FileNameExtensionFilter fileter=new FileNameExtensionFilter("*.images","jpg","png");
         //file.addChoosableFileFilter(fileter);
         int result=file.showSaveDialog(this);
         if(result==JFileChooser.APPROVE_OPTION)
@@ -380,119 +408,73 @@ public class BangDiemWindow extends javax.swing.JPanel {
         else{
             System.out.println("NO file select");
         }
-        
         try {
-            // TODO add your handling code here:
-        String []data;
-        String fileGoc="D:\\File CSV\\";
-        File f=new File(path);
-        String name=f.getName();
-        data=name.split("\\.");
-        String fileName=f.getName();
-        String fileKT=fileGoc+fileName;
-        File fKT=new  File(fileKT);
-        if(fKT.exists()){
-            JOptionPane.showMessageDialog(cbLop,"File Da ton tai");
+            docFile(path);
+            JOptionPane.showMessageDialog(cbLop,"Thêm Thành công");
+        } catch (Exception e) {
         }
-        else{
-            
-            Path source = Paths.get(path);
- 
-		// Destination file.
-		Path destination = Paths.get(fileKT);
-		
-		try {
-			copyFile(source, destination);
-		} catch (IOException e) {
-			System.out.println("Lỗi Khi copy File");
-			e.printStackTrace();
-		}
-            
-            //ghiFileLopHoc("D:\\File CSV\\dslop.csv",data[0]);
-            docFile(fileKT);
-            JOptionPane.showMessageDialog(cbLop,"import Thành Công");
-            load();
-        }
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(DSSinhVienWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        // thu muc goc
-        
-        //lbThongBao.setText("Thông Tin Danh Sách Sinh Viên Lớp : "+nameFile);
+        LoadData();
+        LoadCB();
     }//GEN-LAST:event_btnImpỏtActionPerformed
     public void loadcb1(String p) throws FileNotFoundException, IOException{
-        
-         DefaultComboBoxModel model=new DefaultComboBoxModel();
-      
-        File fileDir = new File(p);
-			
-		BufferedReader br = new BufferedReader(
-		   new InputStreamReader(
-                      new FileInputStream(fileDir), "UTF8"));
-        
-        String []dataSV;
-        String line = br.readLine();
-        line = br.readLine();
-          while(line != null){
-              dataSV=line.split(",");
-               model.addElement(new MonHoc(dataSV[1],dataSV[2]));
-               //cbDSMH.addItem(dataSV[2].toString());
-              line =br.readLine();
-          }
-        br.close();
-        //fr.close();
-
-        cbDSMH.setModel(model);
+//        
+//         DefaultComboBoxModel model=new DefaultComboBoxModel();
+//      
+//        File fileDir = new File(p);
+//			
+//		BufferedReader br = new BufferedReader(
+//		   new InputStreamReader(
+//                      new FileInputStream(fileDir), "UTF8"));
+//        
+//        String []dataSV;
+//        String line = br.readLine();
+//        line = br.readLine();
+//          while(line != null){
+//              dataSV=line.split(",");
+//               model.addElement(new MonHoc(dataSV[1],dataSV[2]));
+//               //cbDSMH.addItem(dataSV[2].toString());
+//              line =br.readLine();
+//          }
+//        br.close();
+//        //fr.close();
+//
+//        cbDSMH.setModel(model);
     }
     private void cbLopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLopItemStateChanged
-       String file="D:\\File CSV\\";
-        String nameLop=cbLop.getSelectedItem().toString();
-        //lopHoc=nameLop;
-        String nameDSMH=nameLop+"_TKB.csv";
-        file=file+nameDSMH;
-        //JOptionPane.showMessageDialog(cbLop,file);
-        if(nameDSMH!=null){
-            try {
-                loadcb1(file);
-            } catch (IOException ex) {
-                Logger.getLogger(DangKyWindow.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+
     }//GEN-LAST:event_cbLopItemStateChanged
     public static void copyFile(Path source, Path destination) throws IOException {
 		Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 	}
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-         String ma=((MonHoc)cbDSMH.getSelectedItem()).getMaMH();
-        String name=cbLop.getSelectedItem().toString();
-        String file="D:\\File CSV\\"+name+"_"+ma+"_KQ.csv";
-        lineAll=file;
-       JOptionPane.showMessageDialog(cbLop,file);
-        try {
-            docFile(file);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(cbLop,"chua co bang diem");
-        }
+//         String ma=((MonHoc)cbDSMH.getSelectedItem()).getMaMH();
+//        String name=cbLop.getSelectedItem().toString();
+//        String file="D:\\File CSV\\"+name+"_"+ma+"_KQ.csv";
+//        lineAll=file;
+//       JOptionPane.showMessageDialog(cbLop,file);
+//        try {
+//            docFile(file);
+//        } catch (IOException ex) {
+//            JOptionPane.showMessageDialog(cbLop,"chua co bang diem");
+//        }
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       try{          
-        String stt=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),0).toString();
-        String mssv=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),1).toString();
-        String ht=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),2).toString();
-        String gk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),3).toString();
-        String ck=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
-        String dk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),5).toString();
-        String td=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),6).toString();
-       String l=lineAll;
-        SuaDiemFrame sdf=new SuaDiemFrame(stt, mssv, ht, gk, ck, dk, td,l);
-        sdf.show(true);
-        }
-       catch(Exception e){
-           JOptionPane.showMessageDialog(cbLop,"Chon dong Sinh Vien Can Sua");
-       }
+//       try{          
+//        String stt=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),0).toString();
+//        String mssv=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),1).toString();
+//        String ht=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),2).toString();
+//        String gk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),3).toString();
+//        String ck=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),4).toString();
+//        String dk=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),5).toString();
+//        String td=tbBangDiem.getValueAt(tbBangDiem.getSelectedRow(),6).toString();
+//       String l=lineAll;
+//        SuaDiemFrame sdf=new SuaDiemFrame(stt, mssv, ht, gk, ck, dk, td,l);
+//        sdf.show(true);
+//        }
+//       catch(Exception e){
+//           JOptionPane.showMessageDialog(cbLop,"Chon dong Sinh Vien Can Sua");
+//       }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
