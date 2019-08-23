@@ -119,25 +119,34 @@ public class DKMHDAO {
         transacsion.commit();
         return list_ntt;     
     }
-    public static List<Object[]> layThongTinMonHocObject(String maLop,String tenMonHoc){
-        List<Object[]> ls=null;
-         Session session = HibernateUtil.getSessionFactory()   
-                 .openSession();
-            try {
-                String hql="select dk "
-                        + " from Monhoc mh , Dkmh dk "
-                        + "where mh.id.maMon=dk.id.maMon"
-                        + " and mh.id.maMon='"+maLop+"'"
-                        + "and mh.tenMh='"+tenMonHoc+"'";
-                Query query=session.createQuery(hql);
-                ls=query.list();
-            } catch (Exception e) {
-                System.out.print(e);
-            }finally{
-                session.close();
-            }                
-         
-        return ls;
+    public static List<Dkmh> layThongTinDangKy(String maLop,String maMonHoc){
+         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transacsion=session.beginTransaction();
+        // lenh hql
+        String hql="from Dkmh dk where dk.id.maLop='"+maLop+"'"
+                + "and dk.id.maMon='"+maMonHoc+"'";
+        Query query=session.createQuery(hql);
+        List<Dkmh> list_ntt=query.list();
+        transacsion.commit();
+        return list_ntt;        
+//        List<Object[]> ls=null;
+//         Session session = HibernateUtil.getSessionFactory()   
+//                 .openSession();
+//            try {
+//                String hql="select dk "
+//                        + " from Monhoc mh , Dkmh dk "
+//                        + "where mh.id.maMon=dk.id.maMon"
+//                        + " and mh.id.maMon='"+maLop+"'"
+//                        + "and mh.tenMh='"+tenMonHoc+"'";
+//                Query query=session.createQuery(hql);
+//                ls=query.list();
+//            } catch (Exception e) {
+//                System.out.print(e);
+//            }finally{
+//                session.close();
+//            }                
+//         
+//        return ls;
     }
     private static final SessionFactory sessionFactory;
     

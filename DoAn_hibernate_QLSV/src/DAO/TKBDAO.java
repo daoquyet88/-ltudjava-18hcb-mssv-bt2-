@@ -94,12 +94,12 @@ public class TKBDAO {
         transacsion.commit();
         return list_ntt;        
     }
-    public List<Monhoc> load_danhSach_DK(String ma) 
+    public List<Monhoc> load_danhSachTimKiem(String ma) 
     {
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
         // lenh hql
-        String hql="from Sinhvien s where s.maLop='"+ma+"'";
+        String hql="from Monhoc mh where mh.id.maLop='"+ma+"'";
         Query query=session.createQuery(hql);
         List<Monhoc> list_ntt=query.list();
         transacsion.commit();

@@ -24,7 +24,8 @@ import javax.swing.table.DefaultTableModel;
 import DAO.*;
 import entities.*;
 import java.util.List;
-
+import entities.*;
+import DAO.*;
 /**
  *
  * @author Admin
@@ -36,14 +37,20 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
      */
     String path="";
     TKBDAO tkbDAO=new TKBDAO();
+    DKMHDAO dkmhDAO=new DKMHDAO();
+    SinhVienDAO svDAO=new SinhVienDAO();
     public ThoiKhoaBieuWindow() throws IOException {
         initComponents();
         load();
     }
     public void load() throws IOException{
-            
+          try{  
          loadData();
          loadCB();
+          }catch(Exception e){
+              return;
+          }
+          
        
     }
      public void loadCB()
@@ -72,6 +79,24 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
         this.tbTKB.setModel(dtm);
         this.tbTKB.repaint();
         this.tbTKB.revalidate();
+    }  
+      private void loadDataTimKiem(String maLop)
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("MaMon");
+        dtm.addColumn("MaLop");
+        dtm.addColumn("Ten MonHoc");
+        dtm.addColumn("Phong");
+             
+        for(Monhoc mh : tkbDAO.load_danhSachTimKiem(maLop))
+        {
+            dtm.addRow(new Object[]{mh.getStt(),mh.getId().getMaMon(),mh.getId().getMaLop(),mh.getTenMh(),mh.getPhongHoc()});
+            
+        }
+        this.tbTKB.setModel(dtm);
+        this.tbTKB.repaint();
+        this.tbTKB.revalidate();
     }   
     public void docFile(String p) throws FileNotFoundException, IOException{
         File fileDir = new File(p);
@@ -88,8 +113,7 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
           while(line != null){
               dataSV=line.split(",");
                 Monhoc mh=new Monhoc();
-                MonhocId mhid=new MonhocId();
-                
+                MonhocId mhid=new MonhocId();                
                 mhid.setMaMon(dataSV[1]);
                 mhid.setMaLop(tenlop);
                 mh.setId(mhid);
@@ -97,6 +121,23 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
                 mh.setTenMh(dataSV[2]);
                 mh.setPhongHoc(dataSV[3]);
                 tkbDAO.add(mh);
+                ///them danh sach sv theo khoa hoc
+                for(entities.Sinhvien sv: this.svDAO.load_danhSach_DK(tenlop))
+                {
+                    
+                    Dkmh dkmh=new Dkmh();
+                    DkmhId dkmhId=new DkmhId();
+                    dkmhId.setMaLop(sv.getMaLop());
+                    dkmhId.setMaMon(dataSV[1]);
+                    dkmhId.setMaSv(sv.getMaSv());
+                    dkmh.setStt(sv.getStt());
+                    dkmh.setId(dkmhId);
+                    dkmh.setHoTen(sv.getHoTen());
+                    dkmh.setGioiTinh(sv.getGioiTinh());
+                    dkmh.setCmnd(sv.getCmnd());
+                    dkmhDAO.add(dkmh);                    
+                }
+                
                 line =br.readLine();
           }
         br.close();
@@ -227,7 +268,7 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
         add(jPanel3);
         jPanel3.setBounds(340, 60, 640, 420);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnimportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimportActionPerformed
         JFileChooser file =new JFileChooser();
         file.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -258,17 +299,10 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
 
     private void cbLopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLopItemStateChanged
       
-//        if (cbLop.getSelectedItem() != null) {
-//            String name = cbLop.getSelectedItem().toString();
-//            String file = "D:\\File CSV\\" + name + "_TKB.csv";
-//
-//            // JOptionPane.showMessageDialog(cbLop,file);
-//            try {
-//                docFile(file);
-//            } catch (IOException ex) {
-//                JOptionPane.showMessageDialog(cbLop, "Lop chua co thoi khoa bieu");
-//            }
-//        }
+        if (cbLop.getSelectedItem() != null) {
+            String name = cbLop.getSelectedItem().toString();
+            loadDataTimKiem(name);
+        }
 
     }//GEN-LAST:event_cbLopItemStateChanged
 

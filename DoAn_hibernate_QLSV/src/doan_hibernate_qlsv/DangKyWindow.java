@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import entities.*;
 import DAO.*;
+import javassist.bytecode.stackmap.BasicBlock;
 /**
  *
  * @author Admin
@@ -37,13 +38,14 @@ public class DangKyWindow extends javax.swing.JPanel {
     String lopHoc="";
     String maMH="";
     DKMHDAO dKMHDAO=new DKMHDAO();
+    SinhVienDAO svDAO=new SinhVienDAO();
     public DangKyWindow() throws IOException {
         initComponents();
        load();
        
     }
     public  void load(){
-        //loadData();
+        loadData();
         loadCbLop();
        
     }
@@ -55,6 +57,26 @@ public class DangKyWindow extends javax.swing.JPanel {
             cbLop.addItem(s);
         }
         
+    }
+    private void loadData()
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("Ma Lop");
+        dtm.addColumn("Ma Mon");
+        dtm.addColumn("MaSV");
+        dtm.addColumn("Ho Ten");
+        dtm.addColumn("Gioi Tinh");
+        dtm.addColumn("CMND");  
+         for(entities.Dkmh dkmh : this.dKMHDAO.load_danhSach())
+        {
+            dtm.addRow(new Object[]{dkmh.getStt(),dkmh.getId().getMaLop(),dkmh.getId().getMaMon(),dkmh.getId().getMaSv(),
+            dkmh.getHoTen(),dkmh.getGioiTinh(),dkmh.getCmnd()             });
+            
+        }
+        this.tbMonHoc.setModel(dtm);
+        this.tbMonHoc.repaint();
+        this.tbMonHoc.revalidate();
     }
     public  void loadCbMonHoc(String maLop){
         cbDSMH.removeAllItems();
@@ -82,32 +104,7 @@ public class DangKyWindow extends javax.swing.JPanel {
         this.tbMonHoc.setModel(dtm);
         this.tbMonHoc.repaint();
         this.tbMonHoc.revalidate();
-    }
-    public void loadcb1(String p) throws FileNotFoundException, IOException{
-//        
-//         DefaultComboBoxModel model=new DefaultComboBoxModel();
-//      
-//         File fileDir = new File(p);
-//			
-//		BufferedReader br = new BufferedReader(
-//		   new InputStreamReader(
-//                      new FileInputStream(fileDir), "UTF8"));
-//        
-//        String []dataSV;
-//        String line = br.readLine();
-//        line = br.readLine();
-//          while(line != null){
-//              dataSV=line.split(",");
-//               model.addElement(new MonHoc(dataSV[1],dataSV[2]));
-//               //cbDSMH.addItem(dataSV[2].toString());
-//              line =br.readLine();
-//          }
-//        br.close();
-//        //fr.close();
-//
-//        cbDSMH.setModel(model);
-    }
-   
+    }  
      public void docFile(String p) throws FileNotFoundException, IOException{
         DefaultTableModel dtm=new DefaultTableModel();      
         
@@ -146,6 +143,7 @@ public class DangKyWindow extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jLabel8 = new javax.swing.JLabel();
         lbThongBao = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         btnTimKiem = new javax.swing.JButton();
@@ -160,6 +158,8 @@ public class DangKyWindow extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         btnThemSV = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtMaLop = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -169,6 +169,8 @@ public class DangKyWindow extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbMonHoc = new javax.swing.JTable();
         btnHuyMH = new javax.swing.JButton();
+
+        jLabel8.setText("jLabel8");
 
         setLayout(null);
 
@@ -226,6 +228,8 @@ public class DangKyWindow extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Mã Lơp");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -233,63 +237,75 @@ public class DangKyWindow extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(btnThemSV, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
+                        .addGap(3, 3, 3)
+                        .addComponent(jLabel4))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel1))
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCMND, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(30, 30, 30)
-                                .addComponent(rdNam)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdNu))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
-                                .addGap(27, 27, 27)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCMND, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtMSSV, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnTimKiem)))))
-                        .addContainerGap())))
+                                .addGap(2, 2, 2)
+                                .addComponent(txtMaLop))
+                            .addComponent(txtMSSV, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(btnTimKiem)))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(btnThemSV, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(rdNam)
+                        .addGap(31, 31, 31)
+                        .addComponent(rdNu))
+                    .addComponent(jLabel5))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(65, 65, 65)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTimKiem)
+                    .addComponent(jLabel4)
+                    .addComponent(txtMSSV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnTimKiem)
-                            .addComponent(jLabel4)
-                            .addComponent(txtMSSV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(rdNam)
-                            .addComponent(rdNu))
-                        .addGap(18, 18, 18)
-                        .addComponent(txtCMND, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(8, 8, 8))
-                    .addComponent(jLabel7))
-                .addGap(65, 65, 65)
+                    .addComponent(txtMaLop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtHoTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdNam)
+                    .addComponent(rdNu)
+                    .addComponent(jLabel6))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtCMND, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThemSV, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
 
         add(jPanel1);
@@ -415,56 +431,22 @@ public class DangKyWindow extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-        String  mssv=txtMSSV.getText();
-        String maLop=mssv.substring(0,2)+"hcb";
-        String file="D:File CSV\\"+maLop+".csv";
-       // JOptionPane.showMessageDialog(cbLop,file);
-          
-        FileReader fr=null;
-        try {
-            fr = new FileReader(file);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DangKyWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        BufferedReader br = new BufferedReader(fr);
-        String []dataSV;
-        String line="";
-        try {
-            line = br.readLine();
-        } catch (IOException ex) {
-            Logger.getLogger(DangKyWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         while(line != null){
-              dataSV=line.split(",");
-             // String mas=dataSV[1].toString();
-               if(dataSV[1].toString().equals(mssv)){
-                   txtHoTen.setText(dataSV[2].toString());
-                   txtCMND.setText(dataSV[4].toString());
-                   if(dataSV[3].toString().equals("Nam")){
-                       //rdNam.isSelected();
-                       rdNam.setSelected(true);
-                       
-                   }
-                   else{
-                       //rdNu.isSelected();
-                       rdNu.setSelected(true);
-                   }
-                   break;
-               }
-            try {
-                line =br.readLine();
-            } catch (IOException ex) {
-                Logger.getLogger(DangKyWindow.class.getName()).log(Level.SEVERE, null, ex);
+        String  mssv=txtMSSV.getText();  
+        try{
+            Sinhvien sv=svDAO.load(mssv);
+            txtCMND.setText(String.valueOf(sv.getCmnd()));
+            txtHoTen.setText(sv.getHoTen());
+            txtMaLop.setText(sv.getMaLop());
+            if(sv.getGioiTinh().equals("Nam")){
+                rdNam.setSelected(true);
+            }else{
+                rdNu.setSelected(true);
+              
             }
-          }
-        try {
-            br.close();
-             fr.close();
-        } catch (IOException ex) {
-            Logger.getLogger(DangKyWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-         
+        } catch(Exception e){
+                    JOptionPane.showMessageDialog(cbLop,"Sv khong ton tai");
+         }
+        
         
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
@@ -541,12 +523,14 @@ public class DangKyWindow extends javax.swing.JPanel {
     private javax.swing.JComboBox cbLop;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -557,5 +541,6 @@ public class DangKyWindow extends javax.swing.JPanel {
     private javax.swing.JTextField txtCMND;
     private javax.swing.JTextField txtHoTen;
     private javax.swing.JTextField txtMSSV;
+    private javax.swing.JTextField txtMaLop;
     // End of variables declaration//GEN-END:variables
 }
