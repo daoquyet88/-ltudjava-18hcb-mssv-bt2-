@@ -338,6 +338,7 @@ public class LopHocWindow extends javax.swing.JPanel {
         }
         try {
             docFile(path);
+            JOptionPane.showMessageDialog(cbLop,"Thêm Thành công");
         } catch (Exception e) {
         }
         LoadData();

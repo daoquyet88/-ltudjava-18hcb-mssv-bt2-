@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package DAO;
 import entities.*;
 import java.util.List;
@@ -11,20 +16,20 @@ import org.hibernate.cfg.AnnotationConfiguration;
  *
  * @author Admin
  */
-public class TKBDAO {
+public class DKMHDAO {
     /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
-    public boolean add(Monhoc mh) {
+    public boolean add(Dkmh dk) {
         try {          
 
             Session session=HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction transacsion=session.beginTransaction();
             session.
-            save(mh);
+            save(dk);
             transacsion.commit();
             return  true;
         } catch (Exception e) {
@@ -33,12 +38,12 @@ public class TKBDAO {
     }
 
 
-    public boolean update(Monhoc mh) {
+    public boolean update(Dkmh dk) {
         try {           
         
             Session session =HibernateUtil.getSessionFactory().getCurrentSession();
             Transaction transaction =session.beginTransaction();
-            session.update(mh);
+            session.update(dk);
             transaction.commit();
             return true;
         } catch (HibernateException e) {
@@ -47,12 +52,12 @@ public class TKBDAO {
     }
 
 
-    public boolean delete(Monhoc mh) {
+    public boolean delete(Dkmh dk) {
         try {
    
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
-        session.delete(mh);
+        session.delete(dk);
         transacsion.commit();
         return true;
         } catch (HibernateException e) {
@@ -61,64 +66,78 @@ public class TKBDAO {
     }
 
    // tra ra 1 dong lop hoc vs ma
-    public Monhoc load(String maMH) 
+    public Sinhvien load(String masv) 
     {
         Session session=HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction=session.beginTransaction();
-        Monhoc mh=(Monhoc) session.get(Monhoc.class,maMH);
+        Sinhvien sv =(Sinhvien) session.get(Sinhvien.class,masv);
         transaction.commit();
-        return mh;
+        return sv;
     }
 
  
-   public List<Monhoc> load_danhSach() 
+    public List<Dkmh> load_danhSach() 
     {
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
         // lenh hql
-        String hql="from Monhoc";
+        String hql="from Dkmh";
         Query query=session.createQuery(hql);
-        List<Monhoc> list_ntt=query.list();
+        List<Dkmh> list_ntt=query.list();
         transacsion.commit();
         return list_ntt;        
     }
     
-    public List<Monhoc> load_danhSachCB() 
-    {
-        Session session =HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transacsion=session.beginTransaction();
-        // lenh hql
-        String hql="SELECT A.maSv , A.stt  FROM Sinhvien A";
-        Query query=session.createQuery(hql);
-        List<Monhoc> list_ntt=query.list();
-        transacsion.commit();
-        return list_ntt;        
-    }
-    public List<Monhoc> load_danhSach_DK(String ma) 
+    public List<Sinhvien> load_danhSach_DK(String ma) 
     {
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transacsion=session.beginTransaction();
         // lenh hql
         String hql="from Sinhvien s where s.maLop='"+ma+"'";
         Query query=session.createQuery(hql);
-        List<Monhoc> list_ntt=query.list();
+        List<Sinhvien> list_ntt=query.list();
         transacsion.commit();
         return list_ntt;        
     }
     public List<String> layMaLop(){
-        try{
-            Session session =HibernateUtil.getSessionFactory().getCurrentSession();
-            Transaction transacsion=session.beginTransaction();
-            // lenh hql
-            String hql="select distinct mh.id.maLop from Monhoc mh";
-            Query query=session.createQuery(hql);
-            List<String> list_ntt=query.list();
-            transacsion.commit();
-            return list_ntt;  
-        }catch(Exception e){
-            return null;
-        }
-           
+        Session session =HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transacsion=session.beginTransaction();
+        // lenh hql
+        String hql="select distinct dk.id.maLop from Dkmh dk";
+        Query query=session.createQuery(hql);
+        List<String> list_ntt=query.list();
+        transacsion.commit();
+        return list_ntt;     
+    }
+    public List<String> layTenMonHoc(String maLop){
+        Session session =HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transacsion=session.beginTransaction();
+        // lenh hql
+        String hql="select distinct mh.id.maMon from Monhoc mh  where mh.id.maLop='"+maLop+"'";
+        Query query=session.createQuery(hql);
+        List<String> list_ntt=query.list();
+        transacsion.commit();
+        return list_ntt;     
+    }
+    public static List<Object[]> layThongTinMonHocObject(String maLop,String tenMonHoc){
+        List<Object[]> ls=null;
+         Session session = HibernateUtil.getSessionFactory()   
+                 .openSession();
+            try {
+                String hql="select dk "
+                        + " from Monhoc mh , Dkmh dk "
+                        + "where mh.id.maMon=dk.id.maMon"
+                        + " and mh.id.maMon='"+maLop+"'"
+                        + "and mh.tenMh='"+tenMonHoc+"'";
+                Query query=session.createQuery(hql);
+                ls=query.list();
+            } catch (Exception e) {
+                System.out.print(e);
+            }finally{
+                session.close();
+            }                
+         
+        return ls;
     }
     private static final SessionFactory sessionFactory;
     

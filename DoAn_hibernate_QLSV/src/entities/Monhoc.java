@@ -17,6 +17,11 @@ public class Monhoc  implements java.io.Serializable {
     public Monhoc() {
     }
 
+    public Monhoc(MonhocId id, String tenMh) {
+        this.id = id;
+        this.tenMh = tenMh;
+    }
+
     public Monhoc(MonhocId id, int stt, String tenMh, String phongHoc) {
        this.id = id;
        this.stt = stt;
@@ -51,6 +56,11 @@ public class Monhoc  implements java.io.Serializable {
     
     public void setPhongHoc(String phongHoc) {
         this.phongHoc = phongHoc;
+    }
+
+    @Override
+    public String toString() {
+        return "Monhoc{" + "tenMh=" + tenMh + '}';
     }
 
 

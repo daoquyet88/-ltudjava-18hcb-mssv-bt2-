@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import DAO.*;
 import entities.*;
+import java.util.List;
 
 /**
  *
@@ -40,70 +41,42 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
         load();
     }
     public void load() throws IOException{
-         
+            
+         loadData();
+         loadCB();
        
     }
-    public void taoFileLopMH(String p) throws UnsupportedEncodingException, FileNotFoundException, IOException{
-//        String tenLop="";
-//        File fileDir = new File(p);			
-//        BufferedReader br = new BufferedReader(
-//           new InputStreamReader(
-//              new FileInputStream(fileDir), "UTF8"));  
-//        String [] dt;
-//        dt=p.split("\\_");
-//        tenLop=dt[0].toString();
-//        String fileOld=dt[0].toString()+".csv";
-//        Path cu=Paths.get(fileOld);
-//        String []dataSV;
-//        String line = br.readLine();    
-//        line = br.readLine();
-//        String fileNew="";
-//        String tf="";
-//        Path moi;
-//          while(line != null){              
-//              dataSV=line.split(",");
-//              fileNew=tenLop+"_"+dataSV[1]+".csv";
-//              moi=Paths.get(fileNew);              
-//              copyFile(cu,moi);            
-//              
-//              line =br.readLine();
-//          }
-//        br.close();
-//        //fr.close();
-//        
-//    
+     public void loadCB()
+    {
+        cbLop.removeAllItems();
+        List<String> lsCB=tkbDAO.layMaLop();
+        for(String s : lsCB){
+            cbLop.addItem(s);
+        }
         
     }
-    public void docFileLH(String p) throws FileNotFoundException, IOException{
-       
-        File fileDir = new File(p);
-			
-		BufferedReader br = new BufferedReader(
-		   new InputStreamReader(
-                      new FileInputStream(fileDir), "UTF8"));     
-        String []dataSV;
-        String line = br.readLine();      
-          
-        line = br.readLine();
-          while(line != null){
-              dataSV=line.split(",");
-              cbLop.addItem(dataSV[0]);
-              line =br.readLine();
-          }
-        br.close();
-        //fr.close();
-        
-    }
-//    public void load() throws IOException{
-//          String file="C:\\Users\\Admin\\Desktop\\File CSV\\17hcb_tkb.csv";
-//          docFile(file);
-//          File f=new File(file);
-//        String nameFile=f.getName();
-//        lbThongBao.setText("Thông Tin Danh Sách Sinh Viên Lớp : "+nameFile);
-//    }
+     private void loadData()
+    {
+        DefaultTableModel dtm=new DefaultTableModel();
+        dtm.addColumn("STT");
+        dtm.addColumn("MaMon");
+        dtm.addColumn("MaLop");
+        dtm.addColumn("Ten MonHoc");
+        dtm.addColumn("Phong");
+             
+        for(Monhoc mh : tkbDAO.load_danhSach())
+        {
+            dtm.addRow(new Object[]{mh.getStt(),mh.getId().getMaMon(),mh.getId().getMaLop(),mh.getTenMh(),mh.getPhongHoc()});
+            
+        }
+        this.tbTKB.setModel(dtm);
+        this.tbTKB.repaint();
+        this.tbTKB.revalidate();
+    }   
     public void docFile(String p) throws FileNotFoundException, IOException{
         File fileDir = new File(p);
-			
+	String []chuoi=fileDir.getName().split("_");
+        String tenlop=chuoi[0];		
 		BufferedReader br = new BufferedReader(
 		   new InputStreamReader(
                       new FileInputStream(fileDir), "UTF8"));
@@ -118,7 +91,7 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
                 MonhocId mhid=new MonhocId();
                 
                 mhid.setMaMon(dataSV[1]);
-                mhid.setMaLop("17hcb");
+                mhid.setMaLop(tenlop);
                 mh.setId(mhid);
                 mh.setStt(Integer.parseInt(dataSV[0]));
                 mh.setTenMh(dataSV[2]);
@@ -276,23 +249,26 @@ public class ThoiKhoaBieuWindow extends javax.swing.JPanel {
             docFile(path);
         } catch (Exception e) {
         }
-//        LoadData();
-//        LoadCB(); 
+        try {
+            load();
+        } catch (IOException ex) {
+            Logger.getLogger(ThoiKhoaBieuWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnimportActionPerformed
 
     private void cbLopItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbLopItemStateChanged
       
-        if (cbLop.getSelectedItem() != null) {
-            String name = cbLop.getSelectedItem().toString();
-            String file = "D:\\File CSV\\" + name + "_TKB.csv";
-
-            // JOptionPane.showMessageDialog(cbLop,file);
-            try {
-                docFile(file);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(cbLop, "Lop chua co thoi khoa bieu");
-            }
-        }
+//        if (cbLop.getSelectedItem() != null) {
+//            String name = cbLop.getSelectedItem().toString();
+//            String file = "D:\\File CSV\\" + name + "_TKB.csv";
+//
+//            // JOptionPane.showMessageDialog(cbLop,file);
+//            try {
+//                docFile(file);
+//            } catch (IOException ex) {
+//                JOptionPane.showMessageDialog(cbLop, "Lop chua co thoi khoa bieu");
+//            }
+//        }
 
     }//GEN-LAST:event_cbLopItemStateChanged
 
