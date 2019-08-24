@@ -55,7 +55,7 @@ public class WindowMain extends javax.swing.JFrame {
         btnBangDiem = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnPhucKhaoSV = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         pnContainer = new javax.swing.JPanel();
@@ -107,7 +107,12 @@ public class WindowMain extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("Phúc Khảo");
+        btnPhucKhaoSV.setText("Phúc Khảo");
+        btnPhucKhaoSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPhucKhaoSVActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Đăng Ký Môn Học");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -142,7 +147,7 @@ public class WindowMain extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jButton5)
                 .addGap(18, 18, 18)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnPhucKhaoSV, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
         );
         pnMenuLayout.setVerticalGroup(
@@ -155,7 +160,7 @@ public class WindowMain extends javax.swing.JFrame {
                     .addComponent(btnBangDiem)
                     .addComponent(jButton4)
                     .addComponent(jButton5)
-                    .addComponent(jButton6)
+                    .addComponent(btnPhucKhaoSV)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addContainerGap(28, Short.MAX_VALUE))
@@ -247,7 +252,7 @@ public class WindowMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        showPanel(new PhucKhaoWindow());
+        showPanel(new TaoPhucKhaoWindow());
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -261,6 +266,10 @@ public class WindowMain extends javax.swing.JFrame {
             Logger.getLogger(WindowMain.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void btnPhucKhaoSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhucKhaoSVActionPerformed
+        
+    }//GEN-LAST:event_btnPhucKhaoSVActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,12 +309,12 @@ public class WindowMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBangDiem;
     private javax.swing.JButton btnLopHoc;
+    private javax.swing.JButton btnPhucKhaoSV;
     private javax.swing.JButton btnTKB;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

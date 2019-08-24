@@ -1,5 +1,5 @@
 package entities;
-// Generated Aug 23, 2019 10:11:20 PM by Hibernate Tools 4.3.1
+// Generated Aug 24, 2019 9:39:23 AM by Hibernate Tools 4.3.1
 
 
 
@@ -12,7 +12,6 @@ public class Svphuckhao  implements java.io.Serializable {
      private SvphuckhaoId id;
      private int stt;
      private String hoTen;
-     private String tenMh;
      private String giuaKy;
      private float cuoiKy;
      private float diemKhac;
@@ -24,11 +23,10 @@ public class Svphuckhao  implements java.io.Serializable {
     public Svphuckhao() {
     }
 
-    public Svphuckhao(SvphuckhaoId id, int stt, String hoTen, String tenMh, String giuaKy, float cuoiKy, float diemKhac, float tongDiem, float diemMm, String lyDo, String tinhTrang) {
+    public Svphuckhao(SvphuckhaoId id, int stt, String hoTen, String giuaKy, float cuoiKy, float diemKhac, float tongDiem, float diemMm, String lyDo, String tinhTrang) {
        this.id = id;
        this.stt = stt;
        this.hoTen = hoTen;
-       this.tenMh = tenMh;
        this.giuaKy = giuaKy;
        this.cuoiKy = cuoiKy;
        this.diemKhac = diemKhac;
@@ -58,13 +56,6 @@ public class Svphuckhao  implements java.io.Serializable {
     
     public void setHoTen(String hoTen) {
         this.hoTen = hoTen;
-    }
-    public String getTenMh() {
-        return this.tenMh;
-    }
-    
-    public void setTenMh(String tenMh) {
-        this.tenMh = tenMh;
     }
     public String getGiuaKy() {
         return this.giuaKy;

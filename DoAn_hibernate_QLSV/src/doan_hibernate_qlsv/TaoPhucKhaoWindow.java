@@ -10,14 +10,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Admin
  */
-public class PhucKhaoWindow extends javax.swing.JPanel {
+public class TaoPhucKhaoWindow extends javax.swing.JPanel {
 
     /**
-     * Creates new form PhucKhaoWindow
+     * Creates new form TaoPhucKhaoWindow
      */
     TKBDAO tkbDAO=new TKBDAO();
     PhucKhaoDAO pkDAO=new PhucKhaoDAO();
-    public PhucKhaoWindow() {
+    public TaoPhucKhaoWindow() {
         initComponents();
         load();
     }

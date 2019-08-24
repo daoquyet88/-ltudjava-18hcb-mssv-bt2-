@@ -40,7 +40,7 @@ public class QLPhucKhao extends javax.swing.JPanel {
         dtm.addColumn("Tình Trang");
         for(entities.Svphuckhao sv: this.qlpkdao.load_danhSach())
         {
-            dtm.addRow(new Object[]{sv.getStt(),sv.getId().getMaLop(),sv.getId().getMaSv(),sv.getTenMh(),sv.getGiuaKy(),
+            dtm.addRow(new Object[]{sv.getStt(),sv.getId().getMaLop(),sv.getId().getMaSv(),sv.getId().getMaMon(),sv.getGiuaKy(),
             sv.getCuoiKy(),sv.getDiemKhac(),sv.getTongDiem(),sv.getDiemMm(),sv.getLyDo(),sv.getTinhTrang()});
             
         }

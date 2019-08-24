@@ -82,6 +82,17 @@ public class QLPhucKhaoDAO {
         transacsion.commit();
         return list_ntt;        
     }
+    public List<Svphuckhao> load_danhSach_SV(String ma) 
+    {
+        Session session =HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transacsion=session.beginTransaction();
+        // lenh hql
+        String hql="from Svphuckhao s where s.id.maSv='"+ma+"'";
+        Query query=session.createQuery(hql);
+        List<Svphuckhao> list_ntt=query.list();
+        transacsion.commit();
+        return list_ntt;        
+    }
     public List<Sinhvien> load_danhSachCB() 
     {
         Session session =HibernateUtil.getSessionFactory().getCurrentSession();

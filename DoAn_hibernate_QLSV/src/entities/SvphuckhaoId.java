@@ -1,5 +1,5 @@
 package entities;
-// Generated Aug 23, 2019 10:11:20 PM by Hibernate Tools 4.3.1
+// Generated Aug 24, 2019 9:39:23 AM by Hibernate Tools 4.3.1
 
 
 
@@ -11,13 +11,15 @@ public class SvphuckhaoId  implements java.io.Serializable {
 
      private String maSv;
      private String maLop;
+     private String maMon;
 
     public SvphuckhaoId() {
     }
 
-    public SvphuckhaoId(String maSv, String maLop) {
+    public SvphuckhaoId(String maSv, String maLop, String maMon) {
        this.maSv = maSv;
        this.maLop = maLop;
+       this.maMon = maMon;
     }
    
     public String getMaSv() {
@@ -34,6 +36,13 @@ public class SvphuckhaoId  implements java.io.Serializable {
     public void setMaLop(String maLop) {
         this.maLop = maLop;
     }
+    public String getMaMon() {
+        return this.maMon;
+    }
+    
+    public void setMaMon(String maMon) {
+        this.maMon = maMon;
+    }
 
 
    public boolean equals(Object other) {
@@ -43,7 +52,8 @@ public class SvphuckhaoId  implements java.io.Serializable {
 		 SvphuckhaoId castOther = ( SvphuckhaoId ) other; 
          
 		 return ( (this.getMaSv()==castOther.getMaSv()) || ( this.getMaSv()!=null && castOther.getMaSv()!=null && this.getMaSv().equals(castOther.getMaSv()) ) )
- && ( (this.getMaLop()==castOther.getMaLop()) || ( this.getMaLop()!=null && castOther.getMaLop()!=null && this.getMaLop().equals(castOther.getMaLop()) ) );
+ && ( (this.getMaLop()==castOther.getMaLop()) || ( this.getMaLop()!=null && castOther.getMaLop()!=null && this.getMaLop().equals(castOther.getMaLop()) ) )
+ && ( (this.getMaMon()==castOther.getMaMon()) || ( this.getMaMon()!=null && castOther.getMaMon()!=null && this.getMaMon().equals(castOther.getMaMon()) ) );
    }
    
    public int hashCode() {
@@ -51,6 +61,7 @@ public class SvphuckhaoId  implements java.io.Serializable {
          
          result = 37 * result + ( getMaSv() == null ? 0 : this.getMaSv().hashCode() );
          result = 37 * result + ( getMaLop() == null ? 0 : this.getMaLop().hashCode() );
+         result = 37 * result + ( getMaMon() == null ? 0 : this.getMaMon().hashCode() );
          return result;
    }   
 
