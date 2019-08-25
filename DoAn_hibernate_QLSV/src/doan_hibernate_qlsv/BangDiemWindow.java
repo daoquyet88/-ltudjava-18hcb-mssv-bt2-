@@ -29,14 +29,14 @@ import java.awt.Color;
 public class BangDiemWindow extends javax.swing.JPanel {
 
     String path="";
-    double hon5=0;
+    double hon5;
     double kem5;
-    double tongHS=0;
+    double tongHS;
     SinhVienDAO svDAO=new SinhVienDAO();
     BangDiemDAO bdDAO=new BangDiemDAO();
     public BangDiemWindow() throws IOException {
         initComponents();
-        //load();
+        load();
         
     }
     public void load() throws IOException{
@@ -93,6 +93,9 @@ public class BangDiemWindow extends javax.swing.JPanel {
     }
     private void loadDataDK(String maLop, String maMonHoc)
     {
+        hon5=0;
+         kem5=0;
+        tongHS=0;
         DefaultTableModel dtm=new DefaultTableModel();
         dtm.addColumn("STT");
         dtm.addColumn("Ma Lop");

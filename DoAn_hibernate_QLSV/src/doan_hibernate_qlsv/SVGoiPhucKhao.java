@@ -18,6 +18,10 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
     String maMon;
     String hoTen;
     QLPhucKhaoDAO qlpkDAO=new QLPhucKhaoDAO();
+    public SVGoiPhucKhao(String ma) {
+        initComponents();
+        txtMaSV.setText(ma);
+    }
     public SVGoiPhucKhao( String malop,String mamon,String masv,String hoten) {
         initComponents();
         txtMaSV.setText(masv);
@@ -52,9 +56,7 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
         this.tbDanhSachYeuCau.revalidate();
     }
 
-    private SVGoiPhucKhao() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,8 +95,6 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         txtMaLop = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("Sinh viết Gởi Phúc Khảo Môn Học");
@@ -131,6 +131,8 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
         txtLyDo.setColumns(20);
         txtLyDo.setRows(5);
         jScrollPane1.setViewportView(txtLyDo);
+
+        txtDMM.setToolTipText("Nhap so Diem mong muon");
 
         btnGoiYeuCau.setText("Gởi Yêu Cầu");
         btnGoiYeuCau.addActionListener(new java.awt.event.ActionListener() {
@@ -318,8 +320,21 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
     private void cbCKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCKActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbCKActionPerformed
-
+    public  boolean kiemTra(){
+        if(txtMaMon.getText().equals("")||txtLyDo.getText().equals("")||txtDMM.getText().equals("")){
+            JOptionPane.showMessageDialog(cbCK,"Nhap DU THONG TIN");
+            return false;
+        }
+        if(cbCK.isSelected()==false&&cbDK.isSelected()==false&&cbGK.isSelected()==false&&cbTD.isSelected()==false){
+            JOptionPane.showMessageDialog(cbCK,"Nhap DU THONG TIN");
+            return false;
+        }
+        return true;
+    }
     private void btnGoiYeuCauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoiYeuCauActionPerformed
+       if(!kiemTra()){
+           return;
+       }
         try {
             maLop=txtMaLop.getText();
             maMon=txtMaMon.getText();
@@ -352,11 +367,17 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
             }else{
                 svpk.setTongDiem(0);
             }
-            svpk.setDiemMm(Float.parseFloat(txtDMM.getText()));
+            try{
+                svpk.setDiemMm(Float.parseFloat(txtDMM.getText()));
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(cbCK,"diem la mot con so ");
+            }
             svpk.setLyDo(txtLyDo.getText());
             svpk.setTinhTrang("Chua Xem");
 
             qlpkDAO.add(svpk);
+            loadData();
+            JOptionPane.showMessageDialog(cbCK,"Goi tao yeu cau Phuc Khao Thanh cong");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(cbCK,"Loi tao yeu cau Phuc Khao");
         }
@@ -390,11 +411,7 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SVGoiPhucKhao().setVisible(true);
-            }
-        });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

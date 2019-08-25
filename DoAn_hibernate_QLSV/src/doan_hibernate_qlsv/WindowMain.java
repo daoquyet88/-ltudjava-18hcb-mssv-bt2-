@@ -22,15 +22,36 @@ public class WindowMain extends javax.swing.JFrame {
      */
     private JPanel childPanel;
     private String use="";
+    int quyen;
     public WindowMain() {
         initComponents();
        showPanel(new LopHocWindow());
     }
-    public WindowMain(String useName) {
+    public WindowMain(String useName,int quyen1) throws IOException {
          initComponents();
-         showPanel(new LopHocWindow());
+         if(quyen1==1){
+            showPanel(new LopHocWindow());
+         }else{
+             showPanel(new BangDiemSVWindow());
+        }
          //lbUse.setText(use);
+         btnTen.setText("Mã Người Dùng : "+useName);
          use=useName;
+         quyen=quyen1;
+         showAD();
+    }
+    public void showAD(){
+        if(quyen==0){
+            btnLopHoc.setVisible(false);
+            btnBangDiem.setVisible(false);
+            btnQLPK.setVisible(false);
+            btnTPK.setVisible(false);
+            btnDKMH.setVisible(false);
+            btnTKB.setVisible(false);
+        }
+        if(quyen==1){
+            btnBDSV.setVisible(false);
+        }
     }
     public void showPanel(JPanel panel)
     {
@@ -53,11 +74,11 @@ public class WindowMain extends javax.swing.JFrame {
         btnLopHoc = new javax.swing.JButton();
         btnTKB = new javax.swing.JButton();
         btnBangDiem = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        btnPhucKhaoSV = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnTPK = new javax.swing.JButton();
+        btnBDSV = new javax.swing.JButton();
+        btnTen = new javax.swing.JButton();
+        btnDKMH = new javax.swing.JButton();
+        btnQLPK = new javax.swing.JButton();
         pnContainer = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -93,38 +114,38 @@ public class WindowMain extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Tạo Phúc KHảo");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnTPK.setText("Tạo Phúc KHảo");
+        btnTPK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnTPKActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Bảng Điểm Sinh Viên ");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnBDSV.setText("Bảng Điểm Sinh Viên ");
+        btnBDSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnBDSVActionPerformed(evt);
             }
         });
 
-        btnPhucKhaoSV.setText("Phúc Khảo");
-        btnPhucKhaoSV.addActionListener(new java.awt.event.ActionListener() {
+        btnTen.setText("Phúc Khảo");
+        btnTen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPhucKhaoSVActionPerformed(evt);
+                btnTenActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Đăng Ký Môn Học");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDKMH.setText("Đăng Ký Môn Học");
+        btnDKMH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDKMHActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Quản Lý Phúc Khỏa");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnQLPK.setText("Quản Lý Phúc Khỏa");
+        btnQLPK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnQLPKActionPerformed(evt);
             }
         });
 
@@ -137,18 +158,17 @@ public class WindowMain extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnTKB)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnDKMH)
                 .addGap(18, 18, 18)
                 .addComponent(btnBangDiem, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTPK, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton5)
-                .addGap(18, 18, 18)
-                .addComponent(btnPhucKhaoSV, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
+                .addComponent(btnQLPK)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(btnBDSV, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnTen, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnMenuLayout.setVerticalGroup(
             pnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,11 +178,11 @@ public class WindowMain extends javax.swing.JFrame {
                     .addComponent(btnLopHoc)
                     .addComponent(btnTKB)
                     .addComponent(btnBangDiem)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5)
-                    .addComponent(btnPhucKhaoSV)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnTPK)
+                    .addComponent(btnBDSV)
+                    .addComponent(btnTen)
+                    .addComponent(btnDKMH)
+                    .addComponent(btnQLPK))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -223,13 +243,13 @@ public class WindowMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnTKBActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDKMHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDKMHActionPerformed
        try {
             showPanel(new DangKyWindow());
         } catch (IOException ex) {
             Logger.getLogger(WindowMain.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDKMHActionPerformed
 
     private void btnBangDiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBangDiemActionPerformed
        try {
@@ -251,25 +271,25 @@ public class WindowMain extends javax.swing.JFrame {
        dp.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnTPKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTPKActionPerformed
         showPanel(new TaoPhucKhaoWindow());
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnTPKActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnQLPKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQLPKActionPerformed
         showPanel(new QLPhucKhao());
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnQLPKActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnBDSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBDSVActionPerformed
         try {
             showPanel(new BangDiemSVWindow(use));
         } catch (IOException ex) {
             Logger.getLogger(WindowMain.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnBDSVActionPerformed
 
-    private void btnPhucKhaoSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPhucKhaoSVActionPerformed
+    private void btnTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTenActionPerformed
         
-    }//GEN-LAST:event_btnPhucKhaoSVActionPerformed
+    }//GEN-LAST:event_btnTenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,14 +327,14 @@ public class WindowMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBDSV;
     private javax.swing.JButton btnBangDiem;
+    private javax.swing.JButton btnDKMH;
     private javax.swing.JButton btnLopHoc;
-    private javax.swing.JButton btnPhucKhaoSV;
+    private javax.swing.JButton btnQLPK;
     private javax.swing.JButton btnTKB;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton btnTPK;
+    private javax.swing.JButton btnTen;
     private javax.swing.JButton jButton8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

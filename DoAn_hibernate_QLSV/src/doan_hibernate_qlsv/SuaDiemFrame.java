@@ -25,9 +25,7 @@ public class SuaDiemFrame extends javax.swing.JFrame {
     /**
      * Creates new form SuaDiemFrame
      */
-    String lineAll="";
-    String dongCu="";
-    //String dongSua="";
+    
     float dt=0;
     BangDiemDAO bdDAO=new BangDiemDAO();
     public SuaDiemFrame() {

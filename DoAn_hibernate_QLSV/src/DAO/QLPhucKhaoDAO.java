@@ -61,11 +61,11 @@ public class QLPhucKhaoDAO {
     }
 
    // tra ra 1 dong lop hoc vs ma
-    public Svphuckhao load(String masv) 
+    public Svphuckhao load(SvphuckhaoId ma) 
     {
         Session session=HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction=session.beginTransaction();
-        Svphuckhao sv =(Svphuckhao) session.get(Svphuckhao.class,masv);
+        Svphuckhao sv =(Svphuckhao) session.get(Svphuckhao.class,ma);
         transaction.commit();
         return sv;
     }

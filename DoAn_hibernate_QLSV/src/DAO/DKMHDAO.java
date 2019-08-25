@@ -66,11 +66,11 @@ public class DKMHDAO {
     }
 
    // tra ra 1 dong lop hoc vs ma
-    public Sinhvien load(String masv) 
+    public Dkmh load(DkmhId id) 
     {
         Session session=HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction=session.beginTransaction();
-        Sinhvien sv =(Sinhvien) session.get(Sinhvien.class,masv);
+        Dkmh sv =(Dkmh) session.get(Dkmh.class,id);
         transaction.commit();
         return sv;
     }

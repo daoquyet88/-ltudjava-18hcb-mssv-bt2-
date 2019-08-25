@@ -158,9 +158,11 @@ public class Login extends javax.swing.JFrame {
            }
            List<Taikhoan> tk=tkDAO.load_danhSach(ma,pass);
            if(tk.size()>0){
+               Taikhoan t=tk.get(0);
+               int quyen=t.getQuyen();
                JOptionPane.showMessageDialog(this,"Dang nhap thanh cong");
                this.setVisible(false);
-               WindowMain wm=new WindowMain(ma);
+               WindowMain wm=new WindowMain(ma,quyen);
                wm.setVisible(true);
            }
            else{

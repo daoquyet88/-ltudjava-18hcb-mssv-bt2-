@@ -151,6 +151,11 @@ public class BangDiemSVWindow extends javax.swing.JPanel {
         });
 
         jButton2.setText("Xem Kết Quả Phúc Khảo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -206,6 +211,11 @@ public class BangDiemSVWindow extends javax.swing.JPanel {
            JOptionPane.showMessageDialog(this,"Chon Dong Can Phuc Khao");
        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        SVGoiPhucKhao sv=new SVGoiPhucKhao( maDangNhap);
+        sv.show();
+    }//GEN-LAST:event_jButton2ActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

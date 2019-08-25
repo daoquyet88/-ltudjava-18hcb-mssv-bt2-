@@ -152,13 +152,13 @@ public class DoiPassFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"pass word khong giong");
         }else{
             try {
-                String maMD5=mahoaMD5(maMOi1);
+                String maMD5=mahoaMD5(maCu);
                 List<Taikhoan> tk=tkDAO.load_danhSach(useName,maMD5);
                 if(tk.size()>0){
-                    Taikhoan t=new Taikhoan();
-                    t=tk.get(1);
-                    t.setPassWord(maMoi);
+                    Taikhoan t=tkDAO.load(useName);
+                    t.setPassWord(mahoaMD5(maMoi));
                     tkDAO.update(t);
+                    JOptionPane.showMessageDialog(this,"Cap Nhap Thanh cÔng");
                 }
                 else{
                     JOptionPane.showMessageDialog(this,"Tai Khoan Khong ton tai");

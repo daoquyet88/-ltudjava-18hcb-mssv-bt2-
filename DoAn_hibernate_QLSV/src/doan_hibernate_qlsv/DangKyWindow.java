@@ -451,59 +451,44 @@ public class DangKyWindow extends javax.swing.JPanel {
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnHuyMHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyMHActionPerformed
-       String stt = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),0).toString();
-       String mssv = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),1).toString();
-       String hoTen = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),2).toString();
-       String gt = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),3).toString();
-       String cmnd= this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),4).toString();
-       String dongHuy=stt+","+mssv+","+hoTen+","+gt+","+cmnd;
-       JOptionPane.showMessageDialog(cbLop,dongHuy);
-       String p=lineAll;
-         String dataSV[];
-         try{
-            ArrayList<String> ar=new ArrayList<String>();
-            FileReader fr = new FileReader(p);
-            BufferedReader br = new BufferedReader(fr);
-            String  line = br.readLine();
-            
-              while(line != null){
-                  ar.add(line);
-                  line =br.readLine();
-              }
+       try{
+            String msMOn = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),2).toString();   
+            String msLop = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),1).toString();   
+            String msSV = this.tbMonHoc.getValueAt(this.tbMonHoc.getSelectedRow(),3).toString();  
+            DkmhId dkmhId=new DkmhId(msLop, msMOn, msSV);
 
-//            for(String s : ar){
-//                System.out.println("kq"+s);
-//            }
-            br.close();
-            fr.close();
-
-            FileWriter fw = new FileWriter(p);
-            BufferedWriter bw = new BufferedWriter(fw);  
-            for(String s : ar){
-                if(s.equals(dongHuy))
-                {
-                     JOptionPane.showMessageDialog(cbLop,dongHuy);
-                }
-                else{
-                    bw.write(s);
-                    bw.newLine();
-                }
-            }
-            bw.close();
-            fw.close();
-         }
-         catch(Exception e){
-             
-         }
-        try {
-            docFile(p);
-        } catch (IOException ex) {
-            Logger.getLogger(DangKyWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Dkmh dkmh=dKMHDAO.load(dkmhId);       
+            dKMHDAO.delete(dkmh);
+            JOptionPane.showMessageDialog(cbLop,"Huy Mon Thanh Cong");
+       }catch(Exception e){
+           JOptionPane.showMessageDialog(cbLop,"Chon Dong Sinh Vien Can Huy Mon");
+       }
+       
     }//GEN-LAST:event_btnHuyMHActionPerformed
 
     private void btnThemSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemSVActionPerformed
-       
+       try{
+           DkmhId dkmhId=new DkmhId();
+           dkmhId.setMaSv(txtMSSV.getText());
+           dkmhId.setMaLop(cbLop.getSelectedItem().toString());
+           dkmhId.setMaMon(cbDSMH.getSelectedItem().toString());
+            Dkmh dkmh=new Dkmh();
+            dkmh.setId(dkmhId);
+            dkmh.setHoTen(txtHoTen.getText());
+            
+            dkmh.setStt(tbMonHoc.getRowCount());
+            if(rdNam.isSelected()){
+                dkmh.setGioiTinh("Nam");
+            }else{
+                dkmh.setGioiTinh("Nư");
+            }
+
+            dkmh.setCmnd(Integer.parseInt(txtCMND.getText()));
+            dKMHDAO.add(dkmh);
+            JOptionPane.showMessageDialog(cbLop,"Them Thanh cong");
+            }catch( Exception e){
+                JOptionPane.showMessageDialog(cbLop,"Them That bai");
+            }
     }//GEN-LAST:event_btnThemSVActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

@@ -59,7 +59,14 @@ public class TaiKhoanDAO {
             return false;
         }
     }
-
+    public Taikhoan load(String id) 
+    {
+        Session session=HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction=session.beginTransaction();
+        Taikhoan bd =(Taikhoan) session.get(Taikhoan.class,id);
+        transaction.commit();
+        return bd;
+    }
    // tra ra 1 dong lop hoc vs ma
     public List<Taikhoan> load_danhSach( String useName, String passWord) 
     {
