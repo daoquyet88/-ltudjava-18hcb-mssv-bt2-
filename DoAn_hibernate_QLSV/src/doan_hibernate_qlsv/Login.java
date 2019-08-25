@@ -162,8 +162,12 @@ public class Login extends javax.swing.JFrame {
                int quyen=t.getQuyen();
                JOptionPane.showMessageDialog(this,"Dang nhap thanh cong");
                this.setVisible(false);
-               WindowMain wm=new WindowMain(ma,quyen);
-               wm.setVisible(true);
+               try{
+                    WindowMain wm=new WindowMain(ma,quyen);
+                    wm.setVisible(true);
+               }catch(Exception e){
+                   
+               }
            }
            else{
                JOptionPane.showMessageDialog(this,"Tai Khoan Khong ton tai");

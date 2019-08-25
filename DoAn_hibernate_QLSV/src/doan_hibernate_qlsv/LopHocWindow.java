@@ -59,7 +59,7 @@ public class LopHocWindow extends javax.swing.JPanel {
         
     }
     public void docFile(String p) throws FileNotFoundException, IOException{
-        
+   
         File fileDir = new File(p);
         // lay ten file 
         String []tenFile=fileDir.getName().split("\\.");
@@ -170,6 +170,11 @@ public class LopHocWindow extends javax.swing.JPanel {
                 cbLopItemStateChanged(evt);
             }
         });
+        cbLop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbLopActionPerformed(evt);
+            }
+        });
         add(cbLop);
         cbLop.setBounds(490, 100, 196, 30);
 
@@ -219,6 +224,11 @@ public class LopHocWindow extends javax.swing.JPanel {
         });
 
         jButton3.setText("Reset");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         rdNam.setText("Nam");
 
@@ -319,7 +329,7 @@ public class LopHocWindow extends javax.swing.JPanel {
     }//GEN-LAST:event_cbLopItemStateChanged
 
     private void btnLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLineActionPerformed
-
+        
         JFileChooser file =new JFileChooser();
         file.setCurrentDirectory(new File(System.getProperty("user.home")));
 
@@ -340,6 +350,7 @@ public class LopHocWindow extends javax.swing.JPanel {
             docFile(path);
             JOptionPane.showMessageDialog(cbLop,"Thêm Thành công");
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(cbLop,"Thêm Thành công");
         }
         LoadData();
         LoadCB();
@@ -375,6 +386,16 @@ public class LopHocWindow extends javax.swing.JPanel {
         }
         LoadDatadk(maLop);
     }//GEN-LAST:event_btnThemSVActionPerformed
+
+    private void cbLopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLopActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbLopActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        txtCMND.setText("");
+        txtHoTen.setText("");
+        txtMSSV.setText("");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

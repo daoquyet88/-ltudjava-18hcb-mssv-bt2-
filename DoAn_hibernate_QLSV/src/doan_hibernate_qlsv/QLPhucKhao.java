@@ -291,6 +291,7 @@ public class QLPhucKhao extends javax.swing.JPanel {
             bd.setTongDiem(Float.parseFloat(txtTD.getText()));
             bdDAO.update(bd);
             JOptionPane.showMessageDialog(this,"Cap Nhap Thanh Cong");
+            load();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,"Cap Nhap That Bại");
         }

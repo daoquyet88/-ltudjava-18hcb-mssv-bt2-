@@ -465,9 +465,18 @@ public class DangKyWindow extends javax.swing.JPanel {
        }
        
     }//GEN-LAST:event_btnHuyMHActionPerformed
-
+    public  boolean kiemTra(){
+        if(txtCMND.getText().equals("")||txtHoTen.getText().equals("")||txtMSSV.getText().equals("")||txtMaLop.getText().equals("")){
+            return false;
+        }
+        return true;
+    }
     private void btnThemSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemSVActionPerformed
-       try{
+      if(kiemTra()==false){
+          JOptionPane.showMessageDialog(cbLop,"Nhap day du thongh tin");
+          return;
+      }
+        try{
            DkmhId dkmhId=new DkmhId();
            dkmhId.setMaSv(txtMSSV.getText());
            dkmhId.setMaLop(cbLop.getSelectedItem().toString());

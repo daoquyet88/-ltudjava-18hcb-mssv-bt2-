@@ -21,6 +21,8 @@ public class SVGoiPhucKhao extends javax.swing.JFrame {
     public SVGoiPhucKhao(String ma) {
         initComponents();
         txtMaSV.setText(ma);
+        maSV=ma;
+        loadData();
     }
     public SVGoiPhucKhao( String malop,String mamon,String masv,String hoten) {
         initComponents();
